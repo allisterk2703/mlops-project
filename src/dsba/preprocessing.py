@@ -1,6 +1,8 @@
 from pandas import DataFrame, Series
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn.impute import SimpleImputer
 
 # from sklearn.model_selection import train_test_split
 
@@ -34,3 +36,9 @@ def preprocess_dataframe(df):
         le = LabelEncoder()
         df[column] = le.fit_transform(df[column].astype(str))
     return df
+
+def replace_missing_values(df, mode="mean"):
+    print(mode)
+    imputer = SimpleImputer(strategy=mode)
+    df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
+    return df_imputed

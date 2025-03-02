@@ -6,12 +6,19 @@ from html import parser
 import logging
 import os
 import sys
+import pandas as pd
 from typing import Any
 from pathlib import Path
 
 from dsba.data_ingestion import load_csv_from_path, write_csv_to_path
-from dsba.model_registry import list_models_ids, load_model, load_model_metadata
+from dsba.model_registry import list_models_ids, load_model, load_model_metadata, save_model
 from dsba.model_prediction import classify_dataframe
+from dsba.dataset_registry import list_datasets_ids, save_dataset, list_dataset_versions
+from dsba.preprocessing import split_dataframe, preprocess_dataframe, replace_missing_values
+from dsba.model_training import train_simple_classifier
+from dsba.model_evaluation import evaluate_classifier
+
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -31,14 +38,52 @@ def create_parser():
     parser = argparse.ArgumentParser(description="DSBA Plaftorm CLI Tool")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    # Save dataset command (it requires a dataset name and a file path)
+    save_dataset_parser = subparsers.add_parser(
+        "save_dataset", help="Save a dataset")
+    # automatically saved in csv format so no need to add .csv at the end of the filename
+    save_dataset_parser.add_argument(
+        "--name", help="Dataset name", required=True)
+    save_dataset_parser.add_argument(
+        "--new", action="store_true", help="Indicates whether the dataset is new")
+    group = save_dataset_parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--file", help="File path")
+    group.add_argument("--url", help="URL path")
+
     # List models command (it has no additional parameters)
-    subparsers.add_parser("list", help="List available models")
+    subparsers.add_parser("list_models", help="List available models")
+
+    # List datasets command (it has no additional parameters)
+    subparsers.add_parser("list_datasets", help="List available datasets")
+
+    # List dataset versions command (it requires a dataset name)
+    list_dataset_versions_parser = subparsers.add_parser(
+        "list_dataset_versions", help="List dataset versions")
+    list_dataset_versions_parser.add_argument(
+        "--dataset", help="Dataset name", required=True)
+
+    # Preprocess command (it requires a dataset name and a target column)
+    preprocess_parser = subparsers.add_parser(
+        "preprocess", help="Preprocess a dataset")
+    preprocess_parser.add_argument("--dataset", help="Dataset name", required=True)
+    preprocess_parser.add_argument("--target", help="Target column", required=True)
+    preprocess_parser.add_argument("--mode", help="Mode to replace missing values", required=True)
+
+    # Traing a model
+    train_parser = subparsers.add_parser("train", help="Train a model")
+    train_parser.add_argument("--dataset", help="Dataset name", required=True)
+    train_parser.add_argument("--target", help="Target column", required=True)
+    train_parser.add_argument("--model", help="Model name", required=True)
+    train_parser.add_argument("--mode", help="Mode to replace missing values", required=False)
 
     # Predict command (it requires a model name, an input file and an output file)
     predict_parser = subparsers.add_parser("predict", help="Make predictions")
-    predict_parser.add_argument("--model", help="Model name to use", required=True)
-    predict_parser.add_argument("--input", help="Input file path", required=True)
-    predict_parser.add_argument("--output", help="Output file path", required=True)
+    predict_parser.add_argument(
+        "--model", help="Model name to use", required=True)
+    predict_parser.add_argument(
+        "--input", help="Input file path", required=True)
+    predict_parser.add_argument(
+        "--output", help="Output file path", required=True)
 
     return parser
 
@@ -50,13 +95,36 @@ def get_script_args():
 
 def main():
     args = get_script_args()
-    if args.command == "list":
+    if args.command == "save_dataset":
+        if args.file:
+            print(f"Saving dataset {args.name} from file {args.file}")
+            save_dataset(args.name, args.file, args.new)
+        elif args.url:
+            print(f"Saving dataset {args.name} from url {args.url}")
+            save_dataset(args.name, args.url, args.new)
+    elif args.command == "list_datasets":
+        list_datasets()
+    elif args.command == "list_dataset_versions":
+        list_dataset_versions(args.dataset)
+    elif args.command == "list_models":
         list_models()
+    elif args.command == "preprocess":
+        preprocess(args.dataset, args.target, args.mode)
+    elif args.command == "train":
+        train(args.dataset, args.target, args.model, args.mode)
     elif args.command == "predict":
         predict(args.model, args.input, args.output)
 
+# ______________________________________________________________________________________________
 
 # We create a few light wrappers around our platform functionalities, just collect inputs and print the results.
+
+
+def list_datasets() -> None:
+    datasets = list_datasets_ids()
+    print("Available datasets:")
+    for dataset in datasets:
+        print(f"- {dataset}")
 
 
 def list_models() -> None:
@@ -64,6 +132,33 @@ def list_models() -> None:
     print("Available models:")
     for model in models:
         print(f"- {model}")
+
+def preprocess(dataset_path, target_column, mode="mean"):
+    dataset = pd.read_csv(dataset_path)
+    preprocessed_dataset = preprocess_dataframe(dataset)
+    preprocessed_dataset = replace_missing_values(preprocessed_dataset, mode)
+    dataset_train, dataset_test = split_dataframe(preprocessed_dataset, test_size=0.2)
+    os.makedirs("preprocessed_datasets", exist_ok=True)
+    os.makedirs(f"preprocessed_datasets/{"/".join(dataset_path.split("/")[:2])}", exist_ok=True)
+    dataset_train.to_csv(f"preprocessed_datasets/{"/".join(dataset_path.split("/")[:2])}/dataset_train.csv", index=False)
+    dataset_test.to_csv(f"preprocessed_datasets/{"/".join(dataset_path.split("/")[:2])}/dataset_test.csv", index=False)
+    return dataset_train, dataset_test
+
+
+def train(dataset_path, target_column, model, mode="mean") -> None:
+    dataset_train, dataset_test = preprocess(dataset_path, target_column, mode)
+    folder = dataset_path.split("/")[1]
+    dataset_used = dataset_path.split("/")[2][:-4]
+    os.makedirs(f"models/{folder}/{dataset_used}", exist_ok=True)
+    if model == "all":
+        for model in ['xgboost', 'random_forest', 'logistic_regression', 'svm', 'decision_tree']:
+            clf, metadata = train_simple_classifier(dataset_train, target_column, f"{folder}/{dataset_used}/{model}", model)
+            save_model(clf, metadata)
+            model_evaluation = evaluate_classifier(clf, target_column, dataset_test)
+    else:
+        clf, metadata = train_simple_classifier(dataset_train, target_column, f"{folder}/{dataset_used}/{model}", model)
+        save_model(clf, metadata)
+        model_evaluation = evaluate_classifier(clf, target_column, dataset_test)
 
 
 def predict(model_id: str, input_file: str, output_file: str) -> None:
