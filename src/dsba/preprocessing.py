@@ -37,8 +37,7 @@ def preprocess_dataframe(df):
         df[column] = le.fit_transform(df[column].astype(str))
     return df
 
-def replace_missing_values(df, mode="mean"):
-    print(mode)
-    imputer = SimpleImputer(strategy=mode)
+def replace_missing_values(df, strategy="mean"):
+    imputer = SimpleImputer(strategy=strategy)
     df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
     return df_imputed

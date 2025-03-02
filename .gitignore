@@ -1,3 +1,10 @@
 *.pyc
 .env
 models/
+preprocessed_datasets/
+.DS_Storedatas/
+datas/
+/datas
+/dataset_test.csv
+/dataset_train.csv
+.dvc/config
