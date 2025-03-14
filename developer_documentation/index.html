@@ -301,48 +301,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="FastAPI">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#display-the-list-of-available-models-for-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the list of available models for a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retrieve-the-data-and-their-types-to-send-for-a-request-to-a-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retrieve the data and their types to send for a request to a model
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#make-a-prediction-using-a-specific-model-trained-on-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make a prediction using a specific model trained on a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#make-a-prediction-using-the-best-model-trained-on-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make a prediction using the best model trained on a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -404,48 +362,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="FastAPI">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#display-the-list-of-available-models-for-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the list of available models for a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retrieve-the-data-and-their-types-to-send-for-a-request-to-a-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retrieve the data and their types to send for a request to a model
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#make-a-prediction-using-a-specific-model-trained-on-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make a prediction using a specific model trained on a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#make-a-prediction-using-the-best-model-trained-on-a-specific-dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make a prediction using the best model trained on a specific dataset
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -484,41 +400,44 @@
 <h1 id="developer-documentation">Developer Documentation<a class="headerlink" href="#developer-documentation" title="Permanent link">&para;</a></h1>
 <h2 id="fastapi">FastAPI<a class="headerlink" href="#fastapi" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Prerequisite:</strong> <code>pip install "fastapi[standard]"</code></li>
 <li>
-<p><strong>Launch the API</strong>:</p>
+<p><strong>Launch the API</strong></p>
 <div class="highlight"><pre><span></span><code>fastapi<span class="w"> </span>dev<span class="w"> </span>src/api/api.py
 </code></pre></div>
 </li>
-</ul>
-<h3 id="display-the-list-of-available-models-for-a-specific-dataset">Display the list of available models for a specific dataset<a class="headerlink" href="#display-the-list-of-available-models-for-a-specific-dataset" title="Permanent link">&para;</a></h3>
-<p><strong>Endpoint:</strong> <code>http://127.0.0.1:8000/models/?dataset=&lt;dataset_name&gt;</code></p>
-<h3 id="retrieve-the-data-and-their-types-to-send-for-a-request-to-a-model">Retrieve the data and their types to send for a request to a model<a class="headerlink" href="#retrieve-the-data-and-their-types-to-send-for-a-request-to-a-model" title="Permanent link">&para;</a></h3>
-<p><strong>Endpoint:</strong> <code>http://127.0.0.1:8000/get_coltypes/?dataset=&lt;dataset_name&gt;</code></p>
-<h3 id="make-a-prediction-using-a-specific-model-trained-on-a-specific-dataset">Make a prediction using a specific model trained on a specific dataset<a class="headerlink" href="#make-a-prediction-using-a-specific-model-trained-on-a-specific-dataset" title="Permanent link">&para;</a></h3>
-<p><strong>Endpoint:</strong> <code>http://127.0.0.1:8000/predict/</code></p>
+<li>
+<p><strong>Display the list of available models for a specific dataset</strong></p>
+<p><em>Endpoint:</em> <code>http://127.0.0.1:8000/models/?dataset=&lt;dataset_name&gt;</code></p>
+</li>
+<li>
+<p><strong>Retrieve the data and their types to send for a request to a model</strong></p>
+<p><em>Endpoint:</em> <code>http://127.0.0.1:8000/get_coltypes/?dataset=&lt;dataset_name&gt;</code></p>
+</li>
+<li>
+<p><strong>Make a prediction using a specific model trained on a specific dataset</strong></p>
+<p><em>Endpoint:</em> <code>http://127.0.0.1:8000/predict/</code></p>
 <ul>
 <li>
-<p><strong>With cURL</strong>:</p>
+<p>With cURL:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8000/predict/&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">          &quot;model_id&quot;: &quot;titanic/titanic_v2_2025-04-01_14-29_random_forest&quot;,</span>
-<span class="s1">          &quot;query&quot;: {</span>
-<span class="s1">              &quot;Pclass&quot;: 3,</span>
-<span class="s1">              &quot;Sex&quot;: 1,</span>
-<span class="s1">              &quot;Age&quot;: 22.0,</span>
-<span class="s1">              &quot;SibSp&quot;: 1,</span>
-<span class="s1">              &quot;Parch&quot;: 0,</span>
-<span class="s1">              &quot;Fare&quot;: 7.25,</span>
-<span class="s1">              &quot;Cabin&quot;: 3,</span>
-<span class="s1">              &quot;Embarked&quot;: 2</span>
-<span class="s1">          }</span>
-<span class="s1">     }&#39;</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">        &quot;model_id&quot;: &quot;titanic/titanic_v2_2025-04-01_14-29_random_forest&quot;,</span>
+<span class="s1">        &quot;query&quot;: {</span>
+<span class="s1">            &quot;Pclass&quot;: 3,</span>
+<span class="s1">            &quot;Sex&quot;: 1,</span>
+<span class="s1">            &quot;Age&quot;: 22.0,</span>
+<span class="s1">            &quot;SibSp&quot;: 1,</span>
+<span class="s1">            &quot;Parch&quot;: 0,</span>
+<span class="s1">            &quot;Fare&quot;: 7.25,</span>
+<span class="s1">            &quot;Cabin&quot;: 3,</span>
+<span class="s1">            &quot;Embarked&quot;: 2</span>
+<span class="s1">        }</span>
+<span class="s1">    }&#39;</span>
 </code></pre></div>
 </li>
 <li>
-<p><strong>With Python</strong>:</p>
+<p>With Python:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000/predict/&quot;</span>
@@ -540,30 +459,32 @@
 </code></pre></div>
 </li>
 </ul>
-<h3 id="make-a-prediction-using-the-best-model-trained-on-a-specific-dataset">Make a prediction using the best model trained on a specific dataset<a class="headerlink" href="#make-a-prediction-using-the-best-model-trained-on-a-specific-dataset" title="Permanent link">&para;</a></h3>
-<p><strong>Endpoint:</strong> <code>http://127.0.0.1:8000/predict_with_best_model/</code></p>
+</li>
+<li>
+<p><strong>Make a prediction using the best model trained on a specific dataset</strong></p>
+<p><em>Endpoint:</em> <code>http://127.0.0.1:8000/predict_with_best_model/</code></p>
 <ul>
 <li>
-<p><strong>With cURL</strong>:</p>
+<p>With cURL:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8000/predict_with_best_model/&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">          &quot;model_id&quot;: &quot;titanic&quot;,</span>
-<span class="s1">          &quot;query&quot;: {</span>
-<span class="s1">              &quot;Pclass&quot;: 3,</span>
-<span class="s1">              &quot;Sex&quot;: 1,</span>
-<span class="s1">              &quot;Age&quot;: 22.0,</span>
-<span class="s1">              &quot;SibSp&quot;: 1,</span>
-<span class="s1">              &quot;Parch&quot;: 0,</span>
-<span class="s1">              &quot;Fare&quot;: 7.25,</span>
-<span class="s1">              &quot;Cabin&quot;: 3,</span>
-<span class="s1">              &quot;Embarked&quot;: 2</span>
-<span class="s1">          }</span>
-<span class="s1">     }&#39;</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">        &quot;model_id&quot;: &quot;titanic&quot;,</span>
+<span class="s1">        &quot;query&quot;: {</span>
+<span class="s1">            &quot;Pclass&quot;: 3,</span>
+<span class="s1">            &quot;Sex&quot;: 1,</span>
+<span class="s1">            &quot;Age&quot;: 22.0,</span>
+<span class="s1">            &quot;SibSp&quot;: 1,</span>
+<span class="s1">            &quot;Parch&quot;: 0,</span>
+<span class="s1">            &quot;Fare&quot;: 7.25,</span>
+<span class="s1">            &quot;Cabin&quot;: 3,</span>
+<span class="s1">            &quot;Embarked&quot;: 2</span>
+<span class="s1">        }</span>
+<span class="s1">    }&#39;</span>
 </code></pre></div>
 </li>
 <li>
-<p><strong>With Python</strong>:</p>
+<p>With Python:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000/predict_with_best_model/&quot;</span>
@@ -585,12 +506,14 @@
 </code></pre></div>
 </li>
 </ul>
+</li>
+</ul>
 <hr />
 <h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
-<p><code>~/Desktop/DSBA/T2 - Data Sciences Electives/MLOps/dsba-platform</code></p>
+<p>(Commands to run in the project root directory)</p>
 <ul>
 <li>
-<p>Build the image:</p>
+<p><strong>Build the image</strong></p>
 <ul>
 <li>
 <p>ARM64 architecture:</p>
@@ -605,7 +528,7 @@
 </ul>
 </li>
 <li>
-<p>Run the container:</p>
+<p><strong>Run the container</strong></p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--platform<span class="w"> </span>linux/amd64<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>--name<span class="w"> </span>fastapi-container<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-v<span class="w"> </span><span class="s2">&quot;/Users/allisterkohn/Desktop/DSBA/T2 - Data Sciences Electives/MLOps/Project/dsba-platform/models:/app/models&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">DSBA_MODELS_ROOT_PATH</span><span class="o">=</span><span class="s2">&quot;/app/models&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -623,32 +546,32 @@
 </ul>
 </li>
 <li>
-<p>Display the environment variables of the container:</p>
+<p><strong>Display the environment variables of the container</strong></p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>fastapi-container<span class="w"> </span>env
 </code></pre></div>
 </li>
 <li>
-<p>Tag the image for AWS ECR:</p>
+<p><strong>Tag the image for AWS ECR</strong></p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>tag<span class="w"> </span>fastapi-app<span class="w"> </span><span class="m">217831684037</span>.dkr.ecr.eu-west-3.amazonaws.com/mlops-app-runner:latest
 </code></pre></div>
 </li>
 <li>
-<p>Authenticate with AWS:</p>
+<p><strong>Authenticate with AWS</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>ecr<span class="w"> </span>get-login-password<span class="w"> </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>--username<span class="w"> </span>AWS<span class="w"> </span>--password-stdin<span class="w"> </span><span class="m">217831684037</span>.dkr.ecr.eu-west-3.amazonaws.com
 </code></pre></div>
 </li>
 <li>
-<p>Create a repository on AWS ECR:</p>
+<p><strong>Create a repository on AWS ECR</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>ecr<span class="w"> </span>create-repository<span class="w"> </span>--repository-name<span class="w"> </span>mlops-app-runner<span class="w"> </span>--region<span class="w"> </span>eu-west-3
 </code></pre></div>
 </li>
 <li>
-<p>Push the image to this repository:</p>
+<p><strong>Push the image to this repository</strong></p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>push<span class="w"> </span><span class="m">217831684037</span>.dkr.ecr.eu-west-3.amazonaws.com/mlops-app-runner:latest
 </code></pre></div>
 </li>
 <li>
-<p>Create an AWS App Runner service:</p>
+<p><strong>Create an AWS App Runner service</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>apprunner<span class="w"> </span>create-service<span class="w"> </span>--service-name<span class="w"> </span>mlops-app-runner<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--profile<span class="w"> </span>s3-user<span class="w"> </span><span class="se">\</span>
@@ -671,7 +594,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Retrieve the `ServiceURI of the deployed service:</p>
+<p><strong>Retrieve the <code>ServiceURI</code> of the deployed service</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>apprunner<span class="w"> </span>list-services<span class="w"> </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span>--profile<span class="w"> </span>s3-user
 </code></pre></div>
 </li>
@@ -679,15 +602,15 @@
 <hr />
 <h2 id="aws">AWS<a class="headerlink" href="#aws" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Install the AWS CLI:: <code>brew install awscli</code></li>
-<li>Connect to any user of your AWS account: <code>aws configure</code></li>
+<li><strong>Install the AWS CLI:</strong> <code>brew install awscli</code></li>
+<li><strong>Connect to any user of your AWS account:</strong> <code>aws configure</code></li>
 <li>
-<p>Create a new user:</p>
+<p><strong>Create a new user</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-user<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
 </code></pre></div>
 </li>
 <li>
-<p>Attach policies to this user:</p>
+<p><strong>Attach policies to this user</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonECS_FullAccess
@@ -699,12 +622,12 @@ aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span cl
 </code></pre></div>
 </li>
 <li>
-<p>Create an access key:</p>
+<p><strong>Create an access key</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-access-key<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
 </code></pre></div>
 </li>
 <li>
-<p>Connect to the created user:</p>
+<p><strong>Connect to the created user</strong></p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure
 </code></pre></div>
 </li>
