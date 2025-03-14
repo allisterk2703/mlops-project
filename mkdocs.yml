@@ -3,10 +3,6 @@ theme:
   name: material
   logo: assets/logo.png
   favicon: assets/favicon.ico
-  features:
-    - navigation.tracking  # Permet de suivre la section active
-  hide:
-    - navigation  # Masque complètement la barre de navigation
 
 extra_css:
   - overrides/main.css
