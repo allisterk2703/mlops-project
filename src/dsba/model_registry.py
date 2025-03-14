@@ -8,6 +8,7 @@ from typing import Any
 from sklearn.base import BaseEstimator
 
 
+
 @dataclass
 class ClassifierMetadata:
     id: str
@@ -17,31 +18,41 @@ class ClassifierMetadata:
     target_column: str
     description: str
     performance_metrics: dict[str, float]
+    gridsearch: bool
 
 
-def save_model(model: BaseEstimator, metadata: ClassifierMetadata) -> None:
-    model_path = _get_model_path(metadata.id)
-    model_metadata_path = _get_model_metadata_path(metadata.id)
+def save_model(model: BaseEstimator, metadata: ClassifierMetadata, model_evaluation: dict[str, float]) -> None:
+    folder = str(metadata.id).split("-")[1]
+    os.makedirs(f"models/{folder}", exist_ok=True)
+
+    model_path = str(_get_model_path(metadata.id, metadata.gridsearch)).replace(f"preprocessed_datasets-{folder}-", f"{folder}/")
+    model_metadata_path = str(_get_model_metadata_path(metadata.id, metadata.gridsearch)).replace(f"preprocessed_datasets-{folder}-", f"{folder}/")
+    print(model_path, model_metadata_path)
+
     logging.info("Save model to path: " + str(model_path))
     joblib.dump(model, model_path)
+
+    evaluation_dict = model_evaluation.to_dict()
+    metadata.performance_metrics.update(evaluation_dict)
+    
     with open(model_metadata_path, "w") as f:
         json.dump(asdict(metadata), f)
 
 
-def list_models_ids() -> list[str]:
-    models_dir = _get_models_dir()
+def list_models_ids(dataset) -> list[str]:
+    models_dir = _get_models_dir() / str(dataset)
     model_files = _list_pickle_files(models_dir)
     models_ids = [_remove_file_extension(model) for model in model_files]
     return models_ids
 
 
-def load_model(model_id) -> BaseEstimator:
-    model_path = _get_model_path(model_id)
+def load_model(model_id, gridsearch) -> BaseEstimator:
+    model_path = _get_model_path(model_id, gridsearch)
     return _load_model_from_path(model_path)
 
 
-def load_model_metadata(model_id) -> ClassifierMetadata:
-    metadata_path = _get_model_metadata_path(model_id)
+def load_model_metadata(model_id, gridsearch) -> ClassifierMetadata:
+    metadata_path = _get_model_metadata_path(model_id, gridsearch)
     with open(metadata_path, "r") as f:
         metadata_as_dict = json.load(f)
     metadata = ClassifierMetadata(**metadata_as_dict)
@@ -57,15 +68,21 @@ def _load_model_from_path(path: str | Path) -> BaseEstimator:
     return joblib.load(path)
 
 
-def _get_model_metadata_path(model_id: str) -> Path:
+def _get_model_metadata_path(model_id: str, gridsearch: bool) -> Path:
     models_dir = _get_models_dir()
-    metadata_path = os.path.join(models_dir, f"{model_id}.json")
+    if gridsearch:
+        metadata_path = os.path.join(models_dir, f"{model_id}_gs.json")
+    else:
+        metadata_path = os.path.join(models_dir, f"{model_id}.json")
     return Path(metadata_path)
 
 
-def _get_model_path(model_id: str) -> Path:
+def _get_model_path(model_id: str, gridsearch: bool) -> Path:
     models_dir = _get_models_dir()
-    model_path = os.path.join(models_dir, f"{model_id}.pkl")
+    if gridsearch:
+        model_path = os.path.join(models_dir, f"{model_id}_gs.pkl")
+    else:
+        model_path = os.path.join(models_dir, f"{model_id}.pkl")
     return Path(model_path)
 
 

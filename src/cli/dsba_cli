@@ -12,13 +12,21 @@ import argparse
 from html import parser
 import logging
 import os
+import subprocess
 import sys
+import json
 import pandas as pd
+import boto3
+import zipfile
+from io import BytesIO
 from typing import Any
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
-
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+AWS_REGION = os.getenv("AWS_REGION")
+S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,16 +53,36 @@ def create_parser():
     save_dataset_parser.add_argument(
         "--name", help="Dataset name", required=True)
     save_dataset_parser.add_argument(
-        "--new", action="store_true", help="Indicates whether the dataset is new")
+        "--new", help="Indicates whether the dataset is new", required=False, action="store_true")
     group = save_dataset_parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--file", help="File path")
     group.add_argument("--url", help="URL path")
 
     # List models command (it has no additional parameters)
-    subparsers.add_parser("list_models", help="List available models")
+    list_models = subparsers.add_parser(
+        "list_models", help="Compare available models")
+    list_models.add_argument(
+        "--dataset", help="Dataset name", required=True)
 
-    # List datasets command (it has no additional parameters)
-    subparsers.add_parser("list_datasets", help="List available datasets")
+    # Compare models command (it has no additional parameters)
+    compare_models = subparsers.add_parser(
+        "compare_models", help="List available models")
+    compare_models.add_argument(
+        "--dataset", help="Dataset name", required=True)
+
+    # List local datasets command (it has no additional parameters)
+    subparsers.add_parser("list_local_datasets",
+                          help="List local available datasets")
+
+    # List S3 datasets command (it has no additional parameters)
+    subparsers.add_parser("list_s3_datasets",
+                          help="List S3 available datasets")
+
+    # Download dataset from S3 command (it requires a dataset name)
+    download_dataset_from_S3_parser = subparsers.add_parser(
+        "download_dataset_from_S3", help="Download dataset from S3")
+    download_dataset_from_S3_parser.add_argument(
+        "--s3_filename", help="S3 filename", required=True)
 
     # List dataset versions command (it requires a dataset name)
     list_dataset_versions_parser = subparsers.add_parser(
@@ -71,8 +99,11 @@ def create_parser():
         "--target", help="Target column", required=True)
     preprocess_parser.add_argument(
         "--mode", help="Mode to replace missing values", required=True)
+    preprocess_parser.add_argument(
+        "--useless", help="List of columns to drop (space-separated values)", nargs="+", required=False, default=[]
+    )
 
-    # Traing a model
+    # Preprocess and train a model
     preprocess_train_parser = subparsers.add_parser(
         "preprocess_and_train", help="Preprocess then train a model")
     preprocess_train_parser.add_argument(
@@ -83,12 +114,19 @@ def create_parser():
         "--model", help="Model name", required=True)
     preprocess_train_parser.add_argument(
         "--mode", help="Mode to replace missing values", required=True)
+    preprocess_train_parser.add_argument(
+        "--useless", help="List of columns to drop (space-separated values)", nargs="+", required=False, default=[]
+    )
+    preprocess_train_parser.add_argument(
+        "--gridsearch", help="Indicates whether GridSearch should be used or not", required=False, action="store_true")
 
-    # Traing a model
+    # Train a model
     train_parser = subparsers.add_parser("train", help="Train a model")
     train_parser.add_argument("--dataset", help="Dataset name", required=True)
     train_parser.add_argument("--target", help="Target column", required=True)
     train_parser.add_argument("--model", help="Model name", required=True)
+    train_parser.add_argument(
+        "--gridsearch", help="Indicates whether GridSearch should be used or not", required=False, action="store_true")
 
     # Find best model command (it requires a dataset name and a target column)
     find_best_model_parser = subparsers.add_parser(
@@ -96,7 +134,7 @@ def create_parser():
     find_best_model_parser.add_argument(
         "--dataset", help="Dataset name", required=True)
     find_best_model_parser.add_argument(
-        "--target", help="Target column", required=True)
+        "--metric", help="Metric to use", default="f1_score", required=False)
 
     # Predict command (it requires a model name, an input file and an output file)
     predict_parser = subparsers.add_parser("predict", help="Make predictions")
@@ -106,6 +144,44 @@ def create_parser():
         "--input", help="Input file path", required=True)
     predict_parser.add_argument(
         "--output", help="Output file path", required=True)
+
+    # Predict with best model command (it requires a model name, an input file and an output file)
+    predict_with_bm_parser = subparsers.add_parser(
+        "predict_with_best_model", help="Make predictions using the best model")
+    predict_with_bm_parser.add_argument(
+        "--folder", help="Folder name", required=True)
+    predict_with_bm_parser.add_argument(
+        "--input", help="Input file path", required=True)
+    predict_with_bm_parser.add_argument(
+        "--output", help="Output file path", required=True)
+    predict_with_bm_parser.add_argument(
+        "--metric", help="Metric to use", default="f1_score", required=False)
+
+    # Build image command
+    subparsers.add_parser("build_image", help="Build the FastAPI image")
+
+    # Run container command
+    subparsers.add_parser("run_container", help="Run the FastAPI container")
+
+    # Create ECR repository command
+    create_ecr_repo_parser = subparsers.add_parser("create_ecr_repository",
+                                                   help="Create an ECR repository")
+    create_ecr_repo_parser.add_argument(
+        "--repository-name", help="Repository name", required=True)
+
+    # Tag and push image command
+    tag_and_push_image_parser = subparsers.add_parser("tag_and_push_image",
+                                                      help="Tag and push the image to ECR")
+    tag_and_push_image_parser.add_argument(
+        "--repository-uri", help="Repository URI", required=True)
+
+    # Deploy from ECR to App Runner command
+    deploy_from_ecr_to_app_runner_parser = subparsers.add_parser("deploy_from_ecr_to_app_runner",
+                                                                 help="Deploy from ECR to App Runner")
+    deploy_from_ecr_to_app_runner_parser.add_argument(
+        "--service-name", help="Service name", required=True)
+    deploy_from_ecr_to_app_runner_parser.add_argument(
+        "--image-identifier", help="Image identifier", required=True)
 
     return parser
 
@@ -124,91 +200,313 @@ def main():
         elif args.url:
             print(f"Saving dataset {args.name} from url {args.url}")
             save_dataset(args.name, args.url, args.new)
-    elif args.command == "list_datasets":
-        list_datasets()
+    elif args.command == "list_local_datasets":
+        list_local_datasets()
+    elif args.command == "list_s3_datasets":
+        list_s3_datasets()
+    elif args.command == "download_dataset_from_S3":
+        download_dataset_from_S3(args.s3_filename)
     elif args.command == "list_dataset_versions":
         list_dataset_versions(args.dataset)
     elif args.command == "list_models":
-        list_models()
+        list_models(args.dataset)
+    elif args.command == "compare_models":
+        compare_models(args.dataset)
     elif args.command == "preprocess":
-        preprocess(args.dataset, args.target, args.mode)
+        preprocess(args.dataset, args.target, args.mode, args.useless)
     elif args.command == "preprocess_and_train":
-        preprocess_train(args.dataset, args.target, args.model, args.mode)
+        preprocess_train(args.dataset, args.target,
+                         args.model, args.mode, args.useless, args.gridsearch)
     elif args.command == "train":
-        train(args.dataset, args.target, args.model)
+        train(args.dataset, args.target, args.model, args.gridsearch)
     elif args.command == "find_best_model":
-        find_best_model(args.dataset, args.target)
+        find_best_model(args.dataset, args.metric)
     elif args.command == "predict":
         predict(args.model, args.input, args.output)
+    elif args.command == "predict_with_best_model":
+        predict_with_best_model(args.folder, args.input,
+                                args.output, args.metric)
+    elif args.command == "build_image":
+        build_image()
+    elif args.command == "run_container":
+        run_container()
+    elif args.command == "create_ecr_repository":
+        create_ecr_repository(args.repository_name)
+    elif args.command == "tag_and_push_image":
+        tag_and_push_image(args.repository_uri)
+    elif args.command == "deploy_from_ecr_to_app_runner":
+        deploy_from_ecr_to_app_runner(args.service_name, args.image_identifier)
+    else:
+        print("Unknown command")
 
 # ______________________________________________________________________________________________
 
 # We create a few light wrappers around our platform functionalities, just collect inputs and print the results.
 
 
-def list_datasets() -> None:
+def list_local_datasets() -> None:
     datasets = list_datasets_ids()
     print("Available datasets:")
     for dataset in datasets:
         print(f"- {dataset}")
 
 
-def list_models() -> None:
-    models = list_models_ids()
-    print("Available models:")
-    for model in models:
-        print(f"- {model}")
+def list_s3_datasets() -> None:
+
+    s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
+    response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME)
+    if "Contents" in response:
+        print("Available datasets in S3:")
+        for obj in response["Contents"]:
+            print("-", obj["Key"])  # Affiche le nom du fichier
+    else:
+        print("Erreur")
 
 
-def preprocess(dataset_path, target_column, mode):
-    dataset = pd.read_csv(dataset_path)
+def download_dataset_from_S3(s3_filename) -> None:
+    s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
+    local_path = f"datas/{s3_filename}"
+    folder = s3_filename.split("/")[0]
+    os.makedirs(f"datas/{folder}", exist_ok=True)
+    try:
+        response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=s3_filename)
+        file_bytes = response['Body'].read()
+        print("ZIP successfully downloaded")
+        zip_local_path = local_path.replace(".csv", ".zip")
+        with open(zip_local_path, "wb") as f:
+            f.write(file_bytes)
+        with zipfile.ZipFile(BytesIO(file_bytes), 'r') as zip_ref:
+            extracted_files = zip_ref.namelist()
+            zip_ref.extractall(os.path.dirname(local_path))
+        extracted_file_path = os.path.join(
+            os.path.dirname(local_path), extracted_files[0])
+        zip_filename = os.path.splitext(os.path.basename(zip_local_path))[0]
+        extracted_extension = os.path.splitext(extracted_file_path)[1]
+        new_file_path = os.path.join(os.path.dirname(
+            local_path), f"{zip_filename}{extracted_extension}")
+        os.rename(extracted_file_path, new_file_path)
+        os.remove(zip_local_path)
+        print(f"CSV extracted and renamed to: {new_file_path}")
+    except Exception as e:
+        print(f"Error downloading {s3_filename} from S3: {e}")
+
+
+def list_models(dataset) -> None:
+    if os.path.exists("models/"):
+        models = list_models_ids(dataset)
+        print("Available models:")
+        for model in models:
+            print(f"- {model}")
+    else:
+        print("No models available")
+
+
+def compare_models(dataset) -> None:
+    if os.path.exists(f"models/{dataset}"):
+        df = pd.read_csv(f"models/{dataset}/metrics.csv")
+        print(df)
+    else:
+        print("No models available")
+
+
+def preprocess(dataset_path: str, target_column: str, mode: str, useless: list):
+    print(useless)
+    dataset = pd.read_csv(f"datas/{dataset_path}")
     preprocessed_dataset = preprocess_dataframe(dataset)
     preprocessed_dataset = replace_missing_values(preprocessed_dataset, mode)
+    preprocessed_dataset = preprocessed_dataset.drop(
+        columns=useless)
     dataset_train, dataset_test = split_dataframe(
         preprocessed_dataset, test_size=0.2)
     os.makedirs("preprocessed_datasets", exist_ok=True)
     os.makedirs(
-        f"preprocessed_datasets/{dataset_path.split("/")[1]}/{dataset_path.split("/")[2][:-4]}", exist_ok=True)
+        f"preprocessed_datasets/{dataset_path.split("/")[0]}/{dataset_path.split("/")[1][:-4]}", exist_ok=True)
     dataset_train.to_csv(
-        f"preprocessed_datasets/{dataset_path.split("/")[1]}/{dataset_path.split("/")[2][:-4]}/dataset_train.csv", index=False)
+        f"preprocessed_datasets/{dataset_path.split("/")[0]}/{dataset_path.split("/")[1][:-4]}/dataset_train.csv", index=False)
     dataset_test.to_csv(
-        f"preprocessed_datasets/{dataset_path.split("/")[1]}/{dataset_path.split("/")[2][:-4]}/dataset_test.csv", index=False)
+        f"preprocessed_datasets/{dataset_path.split("/")[0]}/{dataset_path.split("/")[1][:-4]}/dataset_test.csv", index=False)
+
+    with open(f"models/{dataset_path.split('/')[0]}/useful_columns.txt", "w") as f:
+        col_name = preprocessed_dataset.columns.to_list()
+        col_type = preprocessed_dataset.dtypes.to_list()
+        for col, type in zip(col_name, col_type):
+            f.write(f"{col} : {type}\n")
+
     return dataset_train, dataset_test
 
 
 def preprocess_train(dataset_path, target_column, model, mode) -> None:
     dataset_train, dataset_test = preprocess(dataset_path, target_column, mode)
     train(
-        f"preprocessed_datasets/{dataset_path.split("/")[1]}/{dataset_path.split("/")[2][:-4]}", target_column, model)
+        f"preprocessed_datasets/{dataset_path.split("/")[0]}/{dataset_path.split("/")[1]}", target_column, model)
 
 
-def train(dataset_path, target_column, model) -> None:
+def train(dataset_path, target_column, model, gridsearch=False) -> None:
     dataset_train = pd.read_csv(f"{dataset_path}/dataset_train.csv")
     dataset_test = pd.read_csv(f"{dataset_path}/dataset_test.csv")
     if model == "all":
         for model in ['xgboost', 'random_forest', 'logistic_regression', 'svm', 'decision_tree']:
             clf, metadata = train_simple_classifier(dataset_train, target_column, str(
-                dataset_path.replace("/", "-")[:-4]) + "_" + model, model)
-            save_model(clf, metadata)
+                dataset_path.replace("/", "-")) + "_" + model, model, gridsearch)
             model_evaluation = evaluate_classifier(
                 clf, target_column, dataset_test)
+            # print(clf, metadata, model_evaluation)
+            save_model(clf, metadata, model_evaluation)
     else:
         clf, metadata = train_simple_classifier(dataset_train, target_column, str(
-            dataset_path.replace("/", "-")[:-4]) + "_" + model, model)
-        save_model(clf, metadata)
+            dataset_path.replace("/", "-")) + "_" + model, model, gridsearch)
         model_evaluation = evaluate_classifier(
             clf, target_column, dataset_test)
+        save_model(clf, metadata, model_evaluation)
 
-def 
+
+def extract_metrics_to_csv(json_folder, output_csv):
+    metrics_list = []
+
+    for file in os.listdir(json_folder):
+        if file.endswith(".json"):
+            file_path = os.path.join(json_folder, file)
+
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                model_name = data.get("algorithm", "unknown")
+                dataset = data.get("id", "unknown").replace(
+                    "preprocessed_datasets-", "")
+                accuracy = data["performance_metrics"].get("accuracy", None)
+                precision = data["performance_metrics"].get("precision", None)
+                recall = data["performance_metrics"].get("recall", None)
+                f1_score = data["performance_metrics"].get("f1_score", None)
+                gridsearch = data.get("gridsearch", False)
+
+                metrics_list.append({
+                    "model": model_name,
+                    "dataset": dataset,
+                    "accuracy": accuracy,
+                    "precision": precision,
+                    "recall": recall,
+                    "f1_score": f1_score,
+                    "gridsearch": gridsearch
+                })
+    df = pd.DataFrame(metrics_list)
+    df.to_csv(output_csv, index=False)
+    logging.info(f"Metrics saved to {output_csv}")
+
+    return df
+
+
+def find_best_model(dataset, metric):
+    metrics_csv_path = f"models/{dataset}/metrics.csv"
+    df = extract_metrics_to_csv(f"models/{dataset}", metrics_csv_path)
+
+    best_model_row = df.sort_values(by=metric, ascending=False).iloc[0]
+    best_model = best_model_row["model"]
+    gridsearch = best_model_row["gridsearch"]
+    trained_on = str(best_model_row["dataset"])[
+        len(dataset)+1:-len(best_model)-1] + ".csv"
+
+    print(
+        f"Best model is: {best_model} trained on {trained_on} with {metric} = {best_model_row[metric]:.4f}")
+    with open(f"models/{dataset}/best_model.txt", "w") as f:
+        f.write(best_model + "\n" + str(gridsearch) + "\n" + trained_on)
+
+    return best_model
+
+
+def get_best_model(dataset, metric):
+    with open(f"models/{dataset}/best_model.txt", "r") as f:
+        lines = f.readlines()
+    best_model = lines[0].strip()
+    trained_on = lines[1].strip()[:-4]
+    pickle = f"{dataset}/{trained_on}_{best_model}"
+    return pickle
 
 
 def predict(model_id: str, input_file: str, output_file: str) -> None:
-    model = load_model(model_id)
-    metadata = load_model_metadata(model_id)
+    if model_id.endswith("_gs"):
+        gridsearch = True
+    else:
+        gridsearch = False
+
+    model = load_model(model_id, gridsearch)
+    metadata = load_model_metadata(model_id, gridsearch)
     df = load_csv_from_path(input_file)
     predictions = classify_dataframe(model, df, metadata.target_column)
     write_csv_to_path(predictions, output_file)
     print(f"Scored {len(predictions)} records")
+
+
+def predict_with_best_model(folder: str, input_file: str, output_file: str, metric: str) -> None:
+    best_model_id = get_best_model(folder, metric="f1_score")
+    if best_model_id.endswith("_gs"):
+        gridsearch = True
+    else:
+        gridsearch = False
+    model = load_model(best_model_id, gridsearch)
+    metadata = load_model_metadata(best_model_id)
+    df = load_csv_from_path(input_file)
+    predictions = classify_dataframe(model, df, metadata.target_column)
+    write_csv_to_path(predictions, output_file)
+    print(f"Scored {len(predictions)} records")
+
+
+def build_image():
+    os.system("docker build -t fastapi-app -f src/api/Dockerfile .")
+
+
+def run_container():
+    DSBA_MODELS_ROOT_PATH = os.getenv("DSBA_MODELS_ROOT_PATH")
+    # print(DSBA_MODELS_ROOT_PATH)
+    os.system(
+        f"docker run -d -p 8000:8000 --name fastapi-container -v '{DSBA_MODELS_ROOT_PATH}:/app/models' -e DSBA_MODELS_ROOT_PATH='/app/models' --env-file .env fastapi-app")
+
+
+def create_ecr_repository(repository_name="mlops-app-runner"):
+    os.system(
+        f"aws ecr create-repository --repository-name {repository_name} --region eu-west-3")
+    repository_uri = subprocess.getoutput(
+        f"aws ecr describe-repositories --repository-names {repository_name} --region eu-west-3 --query 'repositories[0].repositoryUri' --output text")
+    print(f"Repository URI: {repository_uri}")
+
+
+def tag_and_push_image(repository_uri):
+    os.system(f"docker tag fastapi-app {repository_uri}:latest")
+    os.system(
+        f"aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin {repository_uri}")
+    os.system(f"docker push {repository_uri}:latest")
+
+
+def deploy_from_ecr_to_app_runner(image_identifier, service_name="mlops-app-runner"):
+    role_arn = subprocess.getoutput(
+        "aws sts get-caller-identity --query 'Arn' --output text")
+
+    source_config = {
+        "AuthenticationConfiguration": {
+            "AccessRoleArn": role_arn
+        },
+        "ImageRepository": {
+            "ImageIdentifier": image_identifier,
+            "ImageRepositoryType": "ECR",
+            "ImageConfiguration": {
+                "Port": "8000",
+                "RuntimeEnvironmentVariables": {
+                    "DSBA_MODELS_ROOT_PATH": "/app/models"
+                }
+            }
+        },
+        "AutoDeployments": True
+    }
+
+    command = [
+        "aws", "apprunner", "create-service",
+        "--service-name", service_name,
+        "--region eu-west-3",
+        "--profile MyIAMUser",
+        "--source-configuration", json.dumps(source_config)
+    ]
+
+    subprocess.run(command, check=True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,46 @@
+site_name: MLOps Project
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.ico
+  features:
+    - navigation.tracking  # Permet de suivre la section active
+  hide:
+    - navigation  # Masque complètement la barre de navigation
+
+extra_css:
+  - overrides/main.css
+
+nav:
+  - Introduction: introduction.md
+  - Installation & Setup : installation_setup.md
+  - User Guide: user_guide.md
+  - Developer Documentation: developer_documentation.md
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.highlight
+  - pymdownx.tasklist
+  - pymdownx.emoji
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.keys
+  - md_in_html
+  - pymdownx.betterem
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.snippets
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.extra
+  - pymdownx.highlight
+  - md_in_html
+  - footnotes
+  - tables
+  - admonition
+  - toc:
+      permalink: true

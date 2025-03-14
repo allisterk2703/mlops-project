@@ -22,6 +22,15 @@ class ClassifierEvaluationResult:
     f1_score: float
     confusion_matrix: list[list[int]]
 
+    def to_dict(self):
+        return {
+            "accuracy": self.accuracy,
+            "precision": self.precision,
+            "recall": self.recall,
+            "f1_score": self.f1_score,
+            "confusion_matrix": self.confusion_matrix.tolist() if hasattr(self.confusion_matrix, "tolist") else self.confusion_matrix
+        }
+
 
 def evaluate_classifier(
     classifier: ClassifierMixin, target_column: str, df: pd.DataFrame
