@@ -2,21 +2,22 @@
 
 1. **Download the repository**
     - Go to [mlops-project](https://github.com/allisterk2703/mlops-project).
-    - Click on "Code", then "Download ZIP"**.**
+    - Click on "Code", then "Download ZIP".
     - Extract the ZIP file to your desired location.
 2. **Open the project in VS Code**
-    - Open the extracted folder in ****VS Code.
+    - Open the extracted folder in **VS Code**.
     - Open a terminal: Press `Control ^` + `Shift ⇧` + `<`.
 3. **Set up the virtual environment**
     
     Run the following commands in the terminal:
     
     ```bash
-    python -m venv .venv  # Create a virtual environment
-    source .venv/bin/activate  # Activate it
-    pip install hatch  # Install Hatch for environment management
-    hatch env create  # Create the environment with Hatch
-    pip install -e .  # Install project dependencies
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install hatch
+    hatch env create
+    pip install -e .
     ```
     
 4. **Create a `.env` file**

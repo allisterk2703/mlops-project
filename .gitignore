@@ -3,6 +3,8 @@ __pycache__/
 
 .env
 
+.venv/
+
 models/*
 datas/*
 preprocessed_datasets/

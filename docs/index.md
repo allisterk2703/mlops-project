@@ -9,11 +9,11 @@
 Allister KOHN,
 [allister.kohn@student-cs.fr](mailto:allister.kohn@student-cs.fr)
 
-Elizaveta VASILEVA,
-[elizaveta.vasileva@student-cs.fr](mailto:elizaveta.vasileva@student-cs.fr)
-
 Enzo PALOS,
 [enzo.palos@student-cs.fr](mailto:enzo.palos@student-cs.fr)
+
+Elizaveta VASILEVA,
+[elizaveta.vasileva@student-cs.fr](mailto:elizaveta.vasileva@student-cs.fr)
 
 Jinsuh YOU,
 [jinsuh.you@student-cs.fr](mailto:jinsuh.you@student-cs.fr)
