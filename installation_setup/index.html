@@ -220,6 +220,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Installation & Setup
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -229,6 +240,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#make-sure-you-replace-your_aws_access_key-your_aws_secret_key-your_aws_region-and-your_s3_bucket_name-with-your-actual-aws-credentials-and-s3-bucket-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make sure you replace &lt;YOUR_AWS_ACCESS_KEY&gt;, &lt;YOUR_AWS_SECRET_KEY&gt;, &lt;YOUR_AWS_REGION&gt;, and &lt;YOUR_S3_BUCKET_NAME&gt; with your actual AWS credentials and S3 bucket name.
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -294,6 +333,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#make-sure-you-replace-your_aws_access_key-your_aws_secret_key-your_aws_region-and-your_s3_bucket_name-with-your-actual-aws-credentials-and-s3-bucket-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make sure you replace &lt;YOUR_AWS_ACCESS_KEY&gt;, &lt;YOUR_AWS_SECRET_KEY&gt;, &lt;YOUR_AWS_REGION&gt;, and &lt;YOUR_S3_BUCKET_NAME&gt; with your actual AWS credentials and S3 bucket name.
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -308,8 +364,21 @@
 
 
 <h1 id="installation-setup">Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Permanent link">&para;</a></h1>
-<ol>
-<li><strong>Download the repository</strong><ul>
+<ul>
+<li>
+<p>Prerequisites:</p>
+<ul>
+<li>You must have Python installed.</li>
+<li>You must have <code>pip</code> installed.</li>
+<li>You must have Docker installed</li>
+<li>You need VS Code or another code editor.</li>
+<li>You must have an AWS account.</li>
+<li>You need to have an S3 bucket already created.</li>
+</ul>
+</li>
+<li>
+<p><strong>Download the repository</strong></p>
+<ul>
 <li>Go to <a href="https://github.com/allisterk2703/mlops-project">mlops-project</a>.</li>
 <li>Click on "Code", then "Download ZIP".</li>
 <li>Extract the ZIP file to your desired location.</li>
@@ -339,9 +408,9 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <span class="nv">AWS_REGION</span><span class="o">=</span>&lt;YOUR_AWS_REGION&gt;
 <span class="nv">S3_BUCKET_NAME</span><span class="o">=</span>&lt;YOUR_S3_BUCKET_NAME&gt;
 </code></pre></div>
+<h2 id="make-sure-you-replace-your_aws_access_key-your_aws_secret_key-your_aws_region-and-your_s3_bucket_name-with-your-actual-aws-credentials-and-s3-bucket-name">Make sure you replace <code>&lt;YOUR_AWS_ACCESS_KEY&gt;</code>, <code>&lt;YOUR_AWS_SECRET_KEY&gt;</code>, <code>&lt;YOUR_AWS_REGION&gt;</code>, and <code>&lt;YOUR_S3_BUCKET_NAME&gt;</code> with your actual AWS credentials and S3 bucket name.<a class="headerlink" href="#make-sure-you-replace-your_aws_access_key-your_aws_secret_key-your_aws_region-and-your_s3_bucket_name-with-your-actual-aws-credentials-and-s3-bucket-name" title="Permanent link">&para;</a></h2>
 </li>
-</ol>
-<hr />
+</ul>
 
 
 
