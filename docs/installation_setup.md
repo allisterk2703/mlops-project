@@ -1,12 +1,24 @@
 # Installation & Setup
 
+### Prerequisites
+
+- You must have Python installed.
+- You must have `pip` installed.
+- You must have Docker installed
+- You need VS Code or another code editor.
+- You must have an AWS account with an access key and secret key.
+- You need to have an S3 bucket already created.
+___
+
+### Installation
+
 1. **Download the repository**
     - Go to [mlops-project](https://github.com/allisterk2703/mlops-project).
     - Click on "Code", then "Download ZIP".
     - Extract the ZIP file to your desired location.
 2. **Open the project in VS Code**
     - Open the extracted folder in **VS Code**.
-    - Open a terminal: Press `Control ^` + `Shift ⇧` + `<`.
+    - Open a terminal in VS Code: Press `Control ^` + `Shift ⇧` + `<`.
 3. **Set up the virtual environment**
     
     Run the following commands in the terminal:
@@ -30,5 +42,8 @@
     AWS_REGION=<YOUR_AWS_REGION>
     S3_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
     ```
+
+    Make sure you replace `<YOUR_AWS_ACCESS_KEY>`, `<YOUR_AWS_SECRET_KEY>`, `<YOUR_AWS_REGION>`, and `<YOUR_S3_BUCKET_NAME>` with your actual AWS credentials and S3 bucket name.
+
 
 ---

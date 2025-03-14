@@ -3,6 +3,8 @@ theme:
   name: material
   logo: assets/logo.png
   favicon: assets/favicon.ico
+  features:
+      - content.code.copy
 
 extra_css:
   - overrides/main.css

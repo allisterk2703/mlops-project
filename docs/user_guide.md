@@ -14,7 +14,7 @@ Allows adding a dataset to the tool.
 - **Notes:**
     - Either `--file` or `--url` must be specified, but not both simultaneously.
     - The `--new` flag is required to add a dataset that does not yet exist.
-- **Exemples :**
+- **Examples:**
     - Add a dataset from a local file:
         
         ```bash
@@ -26,6 +26,8 @@ Allows adding a dataset to the tool.
         ```bash
         python src/cli/dsba_cli save_dataset --name titanic --url https://www.kaggle.com/api/v1/datasets/download/yasserh/titanic-dataset
         ```
+
+        *Note: To download datasets from Kaggle, ensure you have your Kaggle API key stored in a `.kaggle/kaggle.json` file at the root of your project.*
         
 
 ### Display All Local Datasets

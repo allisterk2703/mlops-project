@@ -1,6 +1,6 @@
 # Introduction
 
-[https://github.com/allisterk2703/mlops-project](https://github.com/allisterk2703/mlops-project)
+**[https://github.com/allisterk2703/mlops-project](https://github.com/allisterk2703/mlops-project)**
 
 ---
 
