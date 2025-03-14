@@ -8,7 +8,7 @@
     ```bash
     fastapi dev src/api/api.py
     ```
-    
+
 ### Display the list of available models for a specific dataset
 
 **Endpoint:** `http://127.0.0.1:8000/models/?dataset=<dataset_name>`
