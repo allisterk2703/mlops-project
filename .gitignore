@@ -13,7 +13,6 @@ preprocessed_datasets/
 
 .vscode/
 .DS_Store
-.DS_Storedatas/
 
 predictions.csv
 titanic_test.csv
