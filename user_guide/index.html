@@ -1,0 +1,961 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../installation_setup/">
+      
+      
+        <link rel="next" href="../developer_documentation/">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>User Guide - MLOps Project</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../overrides/main.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MLOps Project" class="md-header__button md-logo" aria-label="MLOps Project" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MLOps Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MLOps Project" class="md-nav__button md-logo" aria-label="MLOps Project" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    MLOps Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation & Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-all-local-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display All Local Datasets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-versions-of-a-specific-local-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display Versions of a Specific Local Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-all-s3-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display All S3 Datasets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-versions-of-a-specific-s3-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display Versions of a Specific S3 Dataset …
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-a-dataset-from-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download a Dataset from S3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocess-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preprocess a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Train a Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocess-a-dataset-and-train-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preprocess a Dataset and Train a Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-available-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Available Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compare-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compare Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-best-model-for-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the Best Model for a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-a-prediction-with-a-specific-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make a Prediction with a Specific Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-a-prediction-with-the-best-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make a Prediction with the Best Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer_documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-all-local-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display All Local Datasets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-versions-of-a-specific-local-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display Versions of a Specific Local Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-all-s3-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display All S3 Datasets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-versions-of-a-specific-s3-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display Versions of a Specific S3 Dataset …
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-a-dataset-from-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download a Dataset from S3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocess-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preprocess a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Train a Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocess-a-dataset-and-train-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preprocess a Dataset and Train a Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-available-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Available Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compare-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compare Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-best-model-for-a-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the Best Model for a Dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-a-prediction-with-a-specific-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make a Prediction with a Specific Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-a-prediction-with-the-best-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Make a Prediction with the Best Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="user-guide">User Guide<a class="headerlink" href="#user-guide" title="Permanent link">&para;</a></h1>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<h3 id="add-a-dataset">Add a Dataset<a class="headerlink" href="#add-a-dataset" title="Permanent link">&para;</a></h3>
+<p>Allows adding a dataset to the tool.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--name</code> (required): Name assigned to the dataset when adding it.</li>
+<li><code>--file</code>: Path to a local file containing the dataset.</li>
+<li><code>--url</code>: URL of a remote source to fetch the dataset.</li>
+<li><code>--new</code>: Indicates that this is a <strong>new dataset</strong> (should not be included when adding a new version of an existing dataset).</li>
+</ul>
+</li>
+<li><strong>Notes:</strong><ul>
+<li>Either <code>--file</code> or <code>--url</code> must be specified, but not both simultaneously.</li>
+<li>The <code>--new</code> flag is required to add a dataset that does not yet exist.</li>
+</ul>
+</li>
+<li>
+<p><strong>Exemples :</strong></p>
+<ul>
+<li>
+<p>Add a dataset from a local file:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--file<span class="w"> </span>/Users/allisterkohn/Desktop/titanic.csv
+</code></pre></div>
+</li>
+<li>
+<p>Add a dataset from a URL:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--url<span class="w"> </span>https://www.kaggle.com/api/v1/datasets/download/yasserh/titanic-dataset
+</code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="display-all-local-datasets">Display All Local Datasets<a class="headerlink" href="#display-all-local-datasets" title="Permanent link">&para;</a></h3>
+<p>Displays the list of all datasets stored locally on the machine.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>list_local_datasets
+</code></pre></div>
+</li>
+</ul>
+<h3 id="display-versions-of-a-specific-local-dataset">Display Versions of a Specific Local Dataset<a class="headerlink" href="#display-versions-of-a-specific-local-dataset" title="Permanent link">&para;</a></h3>
+<p>Lists all versions of a specific dataset stored locally.</p>
+<ul>
+<li><strong>Parameter:</strong><ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>list_dataset_versions<span class="w"> </span>--dataset<span class="w"> </span>titanic
+</code></pre></div>
+</li>
+</ul>
+<h3 id="display-all-s3-datasets">Display All S3 Datasets<a class="headerlink" href="#display-all-s3-datasets" title="Permanent link">&para;</a></h3>
+<p>Displays the list of datasets stored in the S3 bucket <code>dsba-mlops-project-bucket</code>, available for download.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>list_s3_datasets
+</code></pre></div>
+</li>
+</ul>
+<h3 id="display-versions-of-a-specific-s3-dataset">Display Versions of a Specific S3 Dataset …<a class="headerlink" href="#display-versions-of-a-specific-s3-dataset" title="Permanent link">&para;</a></h3>
+<p>Lists all versions of a specific dataset stored in the S3 bucket.</p>
+<ul>
+<li><strong>Parameter:</strong><ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>list_s3_dataset_versions<span class="w"> </span>--dataset<span class="w"> </span>titanic
+</code></pre></div>
+</li>
+</ul>
+<h3 id="download-a-dataset-from-s3">Download a Dataset from S3<a class="headerlink" href="#download-a-dataset-from-s3" title="Permanent link">&para;</a></h3>
+<p>Allows retrieving a dataset stored in the S3 bucket <code>dsba-mlops-project-bucket</code> and downloading it to the local environment.</p>
+<ul>
+<li><strong>Parameter:</strong><ul>
+<li><code>--s3_filename</code> (required): Name of the file as returned by the <code>list_s3_datasets</code> command.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>download_dataset_from_S3<span class="w"> </span>--s3_filename<span class="w"> </span>titanic/titanic_v1_2025-03-06_22-29.csv
+</code></pre></div>
+</li>
+</ul>
+<h3 id="preprocess-a-dataset">Preprocess a Dataset<a class="headerlink" href="#preprocess-a-dataset" title="Permanent link">&para;</a></h3>
+<p>Performs preprocessing on a dataset by filling missing values according to the specified mode and removing unnecessary columns.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Path to the dataset to preprocess.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+</ul>
+<p><strong>Note:</strong></p>
+<ul>
+<li>If <code>--useless</code> is not specified, no columns will be removed.</li>
+<li><strong>Example:</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
+</code></pre></div>
+</li>
+</ul>
+<h3 id="train-a-model">Train a Model<a class="headerlink" href="#train-a-model" title="Permanent link">&para;</a></h3>
+<p>Allows training a model after dataset preprocessing.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--dataset</code> (required): Path to the preprocessed dataset.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
+</ul>
+</li>
+<li>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>
+<p>Train an XGBoost model with GridSearch:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--gridsearch
+</code></pre></div>
+</li>
+<li>
+<p>Train all available models without GridSearch:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>all
+</code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="preprocess-a-dataset-and-train-a-model">Preprocess a Dataset and Train a Model<a class="headerlink" href="#preprocess-a-dataset-and-train-a-model" title="Permanent link">&para;</a></h3>
+<p>Performs dataset preprocessing and trains a model in a single command.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--dataset</code> (required): Path to the dataset to preprocess.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+<li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--mode<span class="w"> </span>mean
+</code></pre></div>
+</li>
+</ul>
+<h3 id="list-available-models">List Available Models<a class="headerlink" href="#list-available-models" title="Permanent link">&para;</a></h3>
+<p>Displays the list of models associated with a specific dataset.</p>
+<ul>
+<li><strong>Parameter:</strong><ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>list_models<span class="w"> </span>--dataset<span class="w"> </span>titanic
+</code></pre></div>
+</li>
+</ul>
+<h3 id="compare-models">Compare Models<a class="headerlink" href="#compare-models" title="Permanent link">&para;</a></h3>
+<p>Displays the performance metrics of trained models.</p>
+<ul>
+<li><strong>Parameter:</strong><ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>compare_models<span class="w"> </span>--dataset<span class="w"> </span>titanic
+</code></pre></div>
+</li>
+</ul>
+<h3 id="find-the-best-model-for-a-dataset">Find the Best Model for a Dataset<a class="headerlink" href="#find-the-best-model-for-a-dataset" title="Permanent link">&para;</a></h3>
+<p>Tests multiple models and selects the one with the best performance based on the specified metric.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+<li><code>--metric</code> (optional, default: <code>f1_score</code>): Model evaluation metric (available metrics: <code>accuracy</code>, <code>precision</code>, <code>recall</code>, <code>f1_score</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>find_best_model<span class="w"> </span>--dataset<span class="w"> </span>titanic<span class="w"> </span>--metric<span class="w"> </span>f1_score
+</code></pre></div>
+</li>
+<li>
+<p><strong>Notes:</strong></p>
+<p>The best model is saved in the <code>best_model.txt</code> file, which consists of three lines:</p>
+<ul>
+<li>The name of the algorithm used.</li>
+<li>Whether GridSearch was used or not.</li>
+<li>The dataset on which the model was trained.</li>
+</ul>
+</li>
+</ul>
+<h3 id="make-a-prediction-with-a-specific-model">Make a Prediction with a Specific Model<a class="headerlink" href="#make-a-prediction-with-a-specific-model" title="Permanent link">&para;</a></h3>
+<p>Predicts results from a test file and saves the predictions to an output file.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--input</code> (required): Path to the test file.</li>
+<li><code>--output</code> (required): Path to the output file for the predictions.</li>
+<li><code>--model</code> (required): Model to use for the prediction.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--model<span class="w"> </span>titanic/titanic_v1_2025-03-01_1_random_forest
+</code></pre></div>
+</li>
+</ul>
+<h3 id="make-a-prediction-with-the-best-model">Make a Prediction with the Best Model<a class="headerlink" href="#make-a-prediction-with-the-best-model" title="Permanent link">&para;</a></h3>
+<p>Automatically uses the best available model to make a prediction.</p>
+<ul>
+<li><strong>Parameters:</strong><ul>
+<li><code>--input</code> (required): Path to the test file.</li>
+<li><code>--output</code> (required): Path to the output file for the predictions.</li>
+<li><code>--folder</code> (required): Name of the dataset containing the model to use.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict_with_best_model<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--folder<span class="w"> </span>titanic
+</code></pre></div>
+</li>
+</ul>
+<h3 id="build-image">Build image<a class="headerlink" href="#build-image" title="Permanent link">&para;</a></h3>
+<p>Builds a Docker image for the project.</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>build_image
+</code></pre></div>
+<h3 id="run-container">Run container<a class="headerlink" href="#run-container" title="Permanent link">&para;</a></h3>
+<p>Runs the Docker container.</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>run_container
+</code></pre></div>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tracking"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
