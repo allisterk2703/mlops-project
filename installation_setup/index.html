@@ -394,13 +394,17 @@
 <hr />
 <h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Download the repository</strong><ul>
+<li>
+<p><strong>Download the repository</strong></p>
+<ul>
 <li>Go to <a href="https://github.com/allisterk2703/mlops-project">mlops-project</a>.</li>
 <li>Click on "Code", then "Download ZIP".</li>
-<li>Extract the ZIP file to your desired location.</li>
+<li>Extract the ZIP file to your <strong>Desktop</strong> for easy access.</li>
 </ul>
 </li>
-<li><strong>Open the project in VS Code</strong><ul>
+<li>
+<p><strong>Open the project in VS Code</strong></p>
+<ul>
 <li>Open the extracted folder in <strong>VS Code</strong>.</li>
 <li>Open a terminal in VS Code: Press <code>Control ^</code> + <code>Shift ⇧</code> + <code>&lt;</code>.</li>
 </ul>
@@ -414,6 +418,13 @@ pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="
 pip<span class="w"> </span>install<span class="w"> </span>hatch
 hatch<span class="w"> </span>env<span class="w"> </span>create
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+</li>
+<li>
+<p><strong>Set environment variables</strong>
+    To ensure the correct paths are recognized, add the following lines to your ~/.zshrc file:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PYTHONPATH=&quot;$PYTHONPATH:$HOME/Desktop/dsba-platform/src&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export DSBA_MODELS_ROOT_PATH=&quot;$HOME/Desktop/dsba-platform/models&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
 </code></pre></div>
 </li>
 <li>
