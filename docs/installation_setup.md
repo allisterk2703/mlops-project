@@ -26,11 +26,9 @@ ___
     Run the following commands in the terminal:
     
     ```bash
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install --upgrade pip
     pip install hatch
     hatch env create
+    hatch shell
     pip install -e .
     ```
 
