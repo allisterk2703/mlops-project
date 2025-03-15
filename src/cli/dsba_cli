@@ -78,6 +78,12 @@ def create_parser():
     subparsers.add_parser("list_s3_datasets",
                           help="List S3 available datasets")
 
+    # List S3 dataset versions command (it has no additional parameters)
+    list_s3_dataset_versions_parser = subparsers.add_parser(
+        "list_s3_dataset_versions", help="List S3 available dataset versions")
+    list_s3_dataset_versions_parser.add_argument(
+        "--dataset", help="Dataset name", required=True)
+
     # Download dataset from S3 command (it requires a dataset name)
     download_dataset_from_S3_parser = subparsers.add_parser(
         "download_dataset_from_S3", help="Download dataset from S3")
@@ -204,6 +210,8 @@ def main():
         list_local_datasets()
     elif args.command == "list_s3_datasets":
         list_s3_datasets()
+    elif args.command == "list_s3_dataset_versions":
+        list_s3_dataset_versions(args.dataset)
     elif args.command == "download_dataset_from_S3":
         download_dataset_from_S3(args.s3_filename)
     elif args.command == "list_dataset_versions":
@@ -252,14 +260,33 @@ def list_local_datasets() -> None:
 
 
 def list_s3_datasets() -> None:
-
     s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
                              aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
     response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME)
+
     if "Contents" in response:
         print("Available datasets in S3:")
         for obj in response["Contents"]:
             print("-", obj["Key"])  # Affiche le nom du fichier
+    else:
+        print("Erreur")
+
+
+def list_s3_dataset_versions(dataset) -> None:
+    s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
+    response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME)
+
+    if "Contents" in response:
+        dataset_files = [obj["Key"] for obj in response["Contents"]
+                         if obj["Key"].split("/")[0] == dataset]
+
+        if dataset_files:
+            print(f"Available versions for dataset '{dataset}':")
+            for file in dataset_files:
+                print("-", file)  # Affiche le chemin complet du fichier
+        else:
+            print(f"No versions found for dataset '{dataset}'.")
     else:
         print("Erreur")
 

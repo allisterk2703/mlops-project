@@ -65,7 +65,7 @@ Displays the list of datasets stored in the S3 bucket `dsba-mlops-project-bucket
     ```
     
 
-### Display Versions of a Specific S3 Dataset …
+### Display Versions of a Specific S3 Dataset
 
 Lists all versions of a specific dataset stored in the S3 bucket.
 
@@ -228,7 +228,7 @@ Automatically uses the best available model to make a prediction.
     ```bash
     python src/cli/dsba_cli predict_with_best_model --input titanic_test.csv --output predictions.csv --folder titanic
     ```
-    
+
 
 ### Build image
 
