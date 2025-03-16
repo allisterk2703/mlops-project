@@ -359,9 +359,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#preprocess-a-dataset-and-train-a-model" class="md-nav__link">
+  <a href="#preprocess-a-dataset-and-train-a-model-combined" class="md-nav__link">
     <span class="md-ellipsis">
-      Preprocess a Dataset and Train a Model
+      Preprocess a Dataset and Train a Model (combined)
     </span>
   </a>
   
@@ -572,9 +572,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#preprocess-a-dataset-and-train-a-model" class="md-nav__link">
+  <a href="#preprocess-a-dataset-and-train-a-model-combined" class="md-nav__link">
     <span class="md-ellipsis">
-      Preprocess a Dataset and Train a Model
+      Preprocess a Dataset and Train a Model (combined)
     </span>
   </a>
   
@@ -668,14 +668,17 @@
 <h3 id="add-a-dataset">Add a Dataset<a class="headerlink" href="#add-a-dataset" title="Permanent link">&para;</a></h3>
 <p>Allows adding a dataset to the tool.</p>
 <ul>
-<li><strong>Parameters:</strong><ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
 <li><code>--name</code> (required): Name assigned to the dataset when adding it.</li>
 <li><code>--file</code>: Path to a local file containing the dataset.</li>
 <li><code>--url</code>: URL of a remote source to fetch the dataset.</li>
 <li><code>--new</code>: Indicates that this is a <strong>new dataset</strong> (should not be included when adding a new version of an existing dataset).</li>
+<li><code>--upload_on_s3</code> (optional): Indicates whether to upload the dataset to the S3 bucket (if present, the dataset will be uploaded).</li>
 </ul>
-</li>
-<li><strong>Notes:</strong><ul>
+<p><strong>Notes:</strong></p>
+<ul>
 <li>Either <code>--file</code> or <code>--url</code> must be specified, but not both simultaneously.</li>
 <li>The <code>--new</code> flag is required to add a dataset that does not yet exist.</li>
 </ul>
@@ -684,15 +687,15 @@
 <p><strong>Examples:</strong></p>
 <ul>
 <li>
-<p>Add a dataset from a local file:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--file<span class="w"> </span>/Users/allisterkohn/Desktop/titanic.csv
+<p>Add a dataset from a URL and add it to the S3 bucket (recommended for an easy demo 🙌):</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--url<span class="w"> </span>https://www.kaggle.com/api/v1/datasets/download/yasserh/titanic-dataset<span class="w"> </span>--upload_on_s3
 </code></pre></div>
+<p><em>⚠️ Note: To download datasets from Kaggle, ensure you have your Kaggle API key stored in <code>~/.kaggle/kaggle.json</code> (<a href="https://www.kaggle.com/docs/api#authentication">https://www.kaggle.com/docs/api#authentication</a>).</em></p>
 </li>
 <li>
-<p>Add a dataset from a URL:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--url<span class="w"> </span>https://www.kaggle.com/api/v1/datasets/download/yasserh/titanic-dataset
+<p>Add a dataset from a local file (and not upload it to the S3 bucket):</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>save_dataset<span class="w"> </span>--name<span class="w"> </span>titanic<span class="w"> </span>--file<span class="w"> </span>/Users/allisterkohn/Desktop/titanic.csv
 </code></pre></div>
-<p><em>Note: To download datasets from Kaggle, ensure you have your Kaggle API key stored in a <code>.kaggle/kaggle.json</code> file at the root of your project.</em></p>
 </li>
 </ul>
 </li>
@@ -720,7 +723,7 @@
 </li>
 </ul>
 <h3 id="display-all-s3-datasets">Display All S3 Datasets<a class="headerlink" href="#display-all-s3-datasets" title="Permanent link">&para;</a></h3>
-<p>Displays the list of datasets stored in the S3 bucket <code>dsba-mlops-project-bucket</code>, available for download.</p>
+<p>Displays the list of datasets available for download stored in your S3 bucket.</p>
 <ul>
 <li>
 <p><strong>Example:</strong></p>
@@ -742,7 +745,7 @@
 </li>
 </ul>
 <h3 id="download-a-dataset-from-s3">Download a Dataset from S3<a class="headerlink" href="#download-a-dataset-from-s3" title="Permanent link">&para;</a></h3>
-<p>Allows retrieving a dataset stored in the S3 bucket <code>dsba-mlops-project-bucket</code> and downloading it to the local environment.</p>
+<p>Allows retrieving a dataset stored in your S3 bucket and downloading it to the local environment.</p>
 <ul>
 <li><strong>Parameter:</strong><ul>
 <li><code>--s3_filename</code> (required): Name of the file as returned by the <code>list_s3_datasets</code> command.</li>
@@ -769,8 +772,10 @@
 <p><strong>Note:</strong></p>
 <ul>
 <li>If <code>--useless</code> is not specified, no columns will be removed.</li>
-<li><strong>Example:</strong></li>
 </ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
 </code></pre></div>
 </li>
@@ -789,35 +794,45 @@
 <p><strong>Examples:</strong></p>
 <ul>
 <li>
-<p>Train an XGBoost model with GridSearch:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--gridsearch
+<p>Train an XGBoost model without GridSearch:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>xgboost
 </code></pre></div>
 </li>
 <li>
-<p>Train all available models without GridSearch:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>all
+<p>Train all available models with GridSearch (recommended for a full demo 🙌)</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>train<span class="w"> </span>--dataset<span class="w"> </span>preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>all<span class="w"> </span>--gridsearch
 </code></pre></div>
 </li>
 </ul>
 </li>
 </ul>
-<h3 id="preprocess-a-dataset-and-train-a-model">Preprocess a Dataset and Train a Model<a class="headerlink" href="#preprocess-a-dataset-and-train-a-model" title="Permanent link">&para;</a></h3>
+<h3 id="preprocess-a-dataset-and-train-a-model-combined">Preprocess a Dataset and Train a Model (combined)<a class="headerlink" href="#preprocess-a-dataset-and-train-a-model-combined" title="Permanent link">&para;</a></h3>
 <p>Performs dataset preprocessing and trains a model in a single command.</p>
 <ul>
 <li><strong>Parameters:</strong><ul>
 <li><code>--dataset</code> (required): Path to the dataset to preprocess.</li>
 <li><code>--target</code> (required): Name of the target variable.</li>
 <li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
-<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
 <li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
 <li><code>--test_size</code> (optional, default: <code>0.2</code>): Size of the test set.</li>
 <li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
 </ul>
 </li>
 <li>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--mode<span class="w"> </span>mean
+<ul>
+<li>
+<p>Train an XGBoost model on a preprocessed dataset without GridSearch:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
 </code></pre></div>
+</li>
+<li>
+<p>Train all available models with GridSearch (recommended for a full demo 🙌):</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--model<span class="w"> </span>all<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket<span class="w"> </span>--gridsearch
+</code></pre></div>
+</li>
+</ul>
 </li>
 </ul>
 <h3 id="list-available-models">List Available Models<a class="headerlink" href="#list-available-models" title="Permanent link">&para;</a></h3>
@@ -880,22 +895,25 @@
 </li>
 <li>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--model<span class="w"> </span>titanic/titanic_v1_2025-03-01_1_random_forest
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--model<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29_random_forest
 </code></pre></div>
 </li>
 </ul>
 <h3 id="make-a-prediction-with-the-best-model">Make a Prediction with the Best Model<a class="headerlink" href="#make-a-prediction-with-the-best-model" title="Permanent link">&para;</a></h3>
 <p>Automatically uses the best available model to make a prediction.</p>
 <ul>
-<li><strong>Parameters:</strong><ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
 <li><code>--input</code> (required): Path to the test file.</li>
 <li><code>--output</code> (required): Path to the output file for the predictions.</li>
-<li><code>--folder</code> (required): Name of the dataset containing the model to use.</li>
+<li><code>--dataset</code> (required): Name of the dataset containing the model to use.</li>
+<li><code>--metric</code> (optional, default: <code>f1_score</code>): Model evaluation metric (available metrics: <code>accuracy</code>, <code>precision</code>, <code>recall</code>, <code>f1_score</code>).</li>
 </ul>
 </li>
 <li>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict_with_best_model<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--folder<span class="w"> </span>titanic
+<p><strong>Example:</strong> Make a prediction with the best model based on the Precision metric:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>predict_with_best_model<span class="w"> </span>--input<span class="w"> </span>titanic_test.csv<span class="w"> </span>--output<span class="w"> </span>predictions.csv<span class="w"> </span>--dataset<span class="w"> </span>titanic<span class="w"> </span>--metric<span class="w"> </span>precision
 </code></pre></div>
 </li>
 </ul>
