@@ -764,6 +764,7 @@
 <li><code>--target</code> (required): Name of the target variable.</li>
 <li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
 <li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+<li><code>--test_size</code> (optional, default: <code>0.2</code>): Size of the test set.</li>
 </ul>
 <p><strong>Note:</strong></p>
 <ul>
@@ -809,6 +810,7 @@
 <li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
 <li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
 <li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--test_size</code> (optional, default: <code>0.2</code>): Size of the test set.</li>
 <li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
 </ul>
 </li>
