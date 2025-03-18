@@ -266,6 +266,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#aws-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       Installation
@@ -358,6 +367,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#aws-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       Installation
@@ -386,10 +404,47 @@
 <ul>
 <li>You must have Python installed.</li>
 <li>You must have <code>pip</code> installed.</li>
-<li>You must have Docker installed</li>
+<li>You must have Docker installed.</li>
 <li>You need VS Code or another code editor.</li>
-<li>You must have an AWS account with an access key and secret key.</li>
-<li>⚠️ You need to have an S3 bucket already created.</li>
+</ul>
+<h3 id="aws-prerequisites">AWS Prerequisites<a class="headerlink" href="#aws-prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>You must have the AWS CLI installed and an AWS account with an access key and secret key stored in <code>~/.aws/credentials</code>:</p>
+<ul>
+<li>Create a new user:
+    <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-user<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
+</code></pre></div></li>
+<li>
+<p>Attach policies to this user:</p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonECS_FullAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonS3FullAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AWSAppRunnerFullAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMFullAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMReadOnlyAccess
+</code></pre></div>
+</li>
+<li>
+<p>Create an access key:</p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-access-key<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
+</code></pre></div>
+</li>
+<li>
+<p>Add the created user to your AWS CLI configuration:</p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure<span class="w"> </span>--profile<span class="w"> </span>MyIAMUser
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>You need to create a S3 bucket:</p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3api<span class="w"> </span>create-bucket<span class="w"> </span>--bucket<span class="w"> </span>&lt;S3_bucket_Name&gt;<span class="w"> </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span>--create-bucket-configuration<span class="w"> </span><span class="nv">LocationConstraint</span><span class="o">=</span>eu-west-3
+</code></pre></div>
+<p>(You can check that the bucket was created by running <code>aws s3 ls</code>.)</p>
+</li>
 </ul>
 <hr />
 <h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
@@ -399,13 +454,17 @@
 <ul>
 <li>Go to <a href="https://github.com/allisterk2703/mlops-project">mlops-project</a>.</li>
 <li>Click on "Code", then "Download ZIP".</li>
-<li>Extract the ZIP file to your <strong>Desktop</strong> for easy access.</li>
+<li>Extract the ZIP file to your <strong>~/Desktop</strong> for easy access.</li>
 </ul>
+<p>Or clone the repository using the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>Desktop
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/allisterk2703/mlops-project.git
+</code></pre></div>
 </li>
 <li>
 <p><strong>Open the project in VS Code</strong></p>
 <ul>
-<li>Open the extracted folder in <strong>VS Code</strong>.</li>
+<li>Open the <code>mlops-project</code> folder in VS Code.</li>
 <li>Open a terminal in VS Code: Press <code>Control ^</code> + <code>Shift ⇧</code> + <code>&lt;</code>.</li>
 </ul>
 </li>
@@ -430,7 +489,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </li>
 <li>
 <p><strong>Create a <code>.env</code> file</strong></p>
-<p>At the root of the project, create a <code>.env</code> file and add the following:</p>
+<p>At the root of the project, create a <code>.env</code> file and add the following (using the AWS credentials and S3 bucket name you created earlier):</p>
 <div class="highlight"><pre><span></span><code><span class="nv">AWS_ACCESS_KEY</span><span class="o">=</span>&lt;YOUR_AWS_ACCESS_KEY&gt;
 <span class="nv">AWS_SECRET_KEY</span><span class="o">=</span>&lt;YOUR_AWS_SECRET_KEY&gt;
 <span class="nv">AWS_REGION</span><span class="o">=</span>&lt;YOUR_AWS_REGION&gt;
