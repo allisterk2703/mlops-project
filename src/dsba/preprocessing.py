@@ -1,5 +1,7 @@
 from pandas import DataFrame, Series
 import pandas as pd
+import pickle
+import logging
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
@@ -34,10 +36,23 @@ def preprocess_dataframe(df):
     """
     for column in df.select_dtypes(include=["object"]):
         le = LabelEncoder()
-        df[column] = le.fit_transform(df[column].astype(str))
+        df.loc[:, column] = le.fit_transform(df[column].astype(str))
     return df
 
-def replace_missing_values(df, strategy="mean"):
-    imputer = SimpleImputer(strategy=strategy)
-    df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
-    return df_imputed
+def replace_missing_values(df, dataset_path, target_column, strategy="mean"):
+    try:
+        df_features = df.drop(columns=[target_column])
+
+        imputer = SimpleImputer(strategy=strategy)
+        df_features_imputed = pd.DataFrame(imputer.fit_transform(df_features), columns=df_features.columns)
+
+        with open(f"preprocessed_datasets/{dataset_path[:-4]}/missing_values.pkl", "wb") as f:
+            pickle.dump(imputer, f)
+
+        logging.info(f"✅ Missing values imputer saved to path: preprocessed_datasets/{dataset_path[:-4]}/missing_values.pkl")
+        df_features_imputed[target_column] = df[target_column]
+
+    except Exception as e:
+        logging.error(f"❌ Error while imputing missing values: {e}")
+
+    return df_features_imputed

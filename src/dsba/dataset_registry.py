@@ -1,14 +1,16 @@
 import os
+import logging
 import shutil
 import requests
 import re
+import zipfile
 from datetime import datetime
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv()
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+load_dotenv(override=True)
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = os.getenv("AWS_REGION")
 S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
@@ -23,54 +25,87 @@ def get_next_version(directory, name):
     return 1
 
 
-def save_dataset(name, source, new) -> None:
+def save_dataset(name: str, source: str, new: bool, upload_on_s3: bool = False) -> None:
     dt = datetime.now().strftime("%Y-%m-%d_%H-%M")
     directory = f"datas/{name}"
 
     os.makedirs(directory, exist_ok=True)
 
     version = 1 if new else get_next_version(directory, name)
+    zip_name = f"{name}_v{version}_{dt}.zip"
     filename = f"{name}_v{version}_{dt}.csv"
     file_path = os.path.join(directory, filename)
+    zip_file_path = os.path.join(directory, zip_name)
 
-    s3 = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
-                      aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
+    # Connection à S3
+    if upload_on_s3:
+        try:
+            s3 = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
+                        aws_secret_access_key=AWS_SECRET_KEY, region_name=AWS_REGION)
+            response = s3.list_buckets() # Test de la connexion
+            logging.info("✅ Connection to S3 successful")
+        except Exception as e:
+            logging.warning(f"⚠️  Connection error to S3: {e}")
+
+    # Récupération des données depuis l'URL fourni
     if source.startswith("http"):
         try:
             response = requests.get(source, stream=True)
             response.raise_for_status()
-            with open(file_path, "wb") as f:
+            with open(zip_file_path, "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
-            print(f"Dataset téléchargé et enregistré sous : {file_path}")
-            s3.upload_file(f"{directory}/{filename}",
-                           S3_BUCKET_NAME, f"{name}/{filename}")
-            print(
-                f"Fichier uploadé sur S3 : s3://{S3_BUCKET_NAME}/{name}/{filename}")
+            logging.info(f"✅ ZIP file downloaded and saved as: {zip_file_path}")
         except Exception as e:
-            print(f"Erreur de téléchargement depuis {source} : {e}")
+            logging.error(f"❌ Download error from {source}: {e}")
+
+        try:
+            temporary_directory = "datas/temp"
+            os.makedirs(temporary_directory, exist_ok=True)
+            with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+                zip_ref.extractall(temporary_directory)
         except Exception as e:
-            print("Erreur d'import du dataset sur S3")
-    else:
-        if not os.path.exists(source):
-            print(f"Erreur : Le fichier '{source}' n'existe pas.")
-            return
-        shutil.copy(source, file_path)
-        print(f"Dataset copié sous : {file_path}")
+            logging.error(f"❌ Error extracting ZIP file: {e}")
+
+        try:
+            os.rename(f"{temporary_directory}/{zip_ref.namelist()[0]}", file_path)
+            logging.info(f"✅ Dataset extracted to: {file_path}")
+        except Exception as e:
+            logging.error(f"❌ Error extracting dataset: {e}")
+
+        try:     
+            os.rmdir(temporary_directory)  
+            os.remove(zip_file_path)
+            logging.info(f"✅ Temporary files removed")
+        except Exception as e:
+            logging.error(f"❌ Error removing temporary files: {e}")
+
+    else: # Récupération des données depuis le chemin fourni
+        try:
+            shutil.copy(source, file_path)
+            logging.info(f"✅ Dataset copied to: {file_path}")
+        except Exception as e:
+            logging.error(f"❌ The file '{source}' does not exist.")
+        
+        # Upload du dataset vers S3 si demandé
+    if upload_on_s3:
         try:
             s3.upload_file(f"{directory}/{filename}",
-                           S3_BUCKET_NAME, f"{name}/{filename}")
-            print(
-                f"Fichier uploadé sur S3 : s3://{S3_BUCKET_NAME}/{name}/{filename}")
+                        S3_BUCKET_NAME, f"{name}/{filename}")
+            logging.info(f"✅ File uploaded to S3: s3://{S3_BUCKET_NAME}/{name}/{filename}")
         except Exception as e:
-            print("Erreur d'import du dataset sur S3")
+            logging.warning("⚠️  Error importing dataset to S3...")
 
 
-def list_dataset_versions(name) -> list[str]:
-    directory = f"datas/{name}"
-    print(f"Available versions for dataset '{name}':")
-    for file in sorted(os.listdir(directory)):
-        print(f"-", file)
+def list_dataset_versions(name: str) -> None:
+    try:
+        directory = f"datas/{name}"
+        files = sorted(os.listdir(directory))
+        print(f"Available versions for dataset '{name}':")
+        for file in files:
+            print(f"-", file)
+    except Exception as e:
+        logging.error(f"❌ Error listing dataset versions: {e}")
 
 
 def list_datasets_ids() -> list[str]:

@@ -19,6 +19,7 @@ class ClassifierMetadata:
     description: str
     performance_metrics: dict[str, float]
     gridsearch: bool
+    dataset: str
 
 
 def save_model(model: BaseEstimator, metadata: ClassifierMetadata, model_evaluation: dict[str, float]) -> None:
@@ -27,16 +28,18 @@ def save_model(model: BaseEstimator, metadata: ClassifierMetadata, model_evaluat
 
     model_path = str(_get_model_path(metadata.id, metadata.gridsearch)).replace(f"preprocessed_datasets-{folder}-", f"{folder}/")
     model_metadata_path = str(_get_model_metadata_path(metadata.id, metadata.gridsearch)).replace(f"preprocessed_datasets-{folder}-", f"{folder}/")
-    print(model_path, model_metadata_path)
 
-    logging.info("Save model to path: " + str(model_path))
+    logging.info("✅ Model saved to path: " + str(model_path))
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
     joblib.dump(model, model_path)
 
     evaluation_dict = model_evaluation.to_dict()
     metadata.performance_metrics.update(evaluation_dict)
+
     
     with open(model_metadata_path, "w") as f:
         json.dump(asdict(metadata), f)
+    logging.info("✅ Metadata saved to path: " + str(model_metadata_path))
 
 
 def list_models_ids(dataset) -> list[str]:
@@ -64,7 +67,7 @@ def _load_model_from_path(path: str | Path) -> BaseEstimator:
     # meaning it is not intended to be used outside of this file
     # It is optional but facilitates the readability of the code
     path = _get_absolute_path(path)
-    logging.info("Load model from path: " + str(path))
+    logging.info("✅ Load model from path: " + str(path))
     return joblib.load(path)
 
 

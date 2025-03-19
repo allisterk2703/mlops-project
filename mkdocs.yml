@@ -10,10 +10,11 @@ extra_css:
   - overrides/main.css
 
 nav:
-  - Introduction: index.md
-  - Installation & Setup : installation_setup.md
-  - User Guide: user_guide.md
-  - Developer Documentation: developer_documentation.md
+  - 📖 &nbsp;Introduction : index.md
+  - 🛠️ &nbsp;Installation & Setup : installation_setup.md
+  - 👤 &nbsp;User Guide : user_guide.md
+  # - 💻 &nbsp;Developer Documentation : developer_documentation.md
+  - 🚀 &nbsp;Next Steps : next_steps.md
 
 markdown_extensions:
   - attr_list

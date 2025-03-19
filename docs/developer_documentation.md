@@ -1,4 +1,4 @@
-# Developer Documentation
+# Developer Documentation (Local Testing)
 
 ## FastAPI
 
@@ -150,6 +150,15 @@
         ```
         
         Then re-run the  `docker run` command.
+
+
+- **Run the container using the CLI**
+
+    Runs the Docker container.
+
+    ```bash
+    python src/cli/dsba_cli run_container
+    ```
         
 - **Display the environment variables of the container**
     

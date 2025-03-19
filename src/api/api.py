@@ -11,7 +11,7 @@ from dsba.model_prediction import classify_record
 from dsba.model_registry import list_models_ids, _get_models_dir, _list_pickle_files
 from typing import Dict, Any
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(override=True)
 
 # class TitanicFeatures(BaseModel):
 #     PassengerId: int

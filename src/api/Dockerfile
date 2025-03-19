@@ -4,17 +4,23 @@ FROM python:3.12-slim
 # Set the working directory
 WORKDIR /app
 
-# Copier le fichier requirements.txt et installer les dépendances
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Hatch
+RUN pip install --no-cache-dir hatch
 
-# Copier tout le contenu du projet dans le conteneur
+# Copy only the necessary files for dependency installation
+COPY pyproject.toml README.md ./
+
+# Create the environment and install dependencies with Hatch
+RUN hatch env create
+
+# Copy the entire project into the container
 COPY . .
 
-# Ajouter /app/src au PYTHONPATH
+# Add /app/src to PYTHONPATH
 ENV PYTHONPATH="/app/src"
 
-# Exposer le port si l'API tourne sur Flask/FastAPI
+# Expose the API port
 EXPOSE 8000
 
-CMD ["uvicorn", "src.api.api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start the application using Hatch
+CMD ["hatch", "run", "uvicorn", "src.api.api:app", "--host", "0.0.0.0", "--port", "8000"]

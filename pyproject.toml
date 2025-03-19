@@ -100,3 +100,6 @@ exclude = []
 [tool.mypy]
 python_version = "3.12"
 strict = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dsba"]

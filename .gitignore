@@ -17,4 +17,3 @@ preprocessed_datasets/
 .DS_Store
 
 predictions.csv
-titanic_test.csv

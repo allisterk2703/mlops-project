@@ -15,13 +15,16 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from dsba.model_registry import ClassifierMetadata
 from .preprocessing import split_features_and_target, preprocess_dataframe
 
 
-def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str, algorithm: str, gridsearch: bool = False) -> tuple[ClassifierMixin, ClassifierMetadata]:
-    logging.info(f"Start training with {algorithm} (GridSearch: {gridsearch})")
+def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str, algorithm: str, dataset_name: str, gridsearch: bool = False) -> tuple[ClassifierMixin, ClassifierMetadata]:
+    print("\n")
+    logging.info(f"⏳ Start training with {algorithm} (GridSearch: {gridsearch})")
 
     df = preprocess_dataframe(df)
     X, y = split_features_and_target(df, target_column)
@@ -29,8 +32,8 @@ def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str,
     param_grids = {
         "xgboost": {"n_estimators": [50, 100], "learning_rate": [0.01, 0.1]},
         "random_forest": {"n_estimators": [10, 50, 100]},
-        "logistic_regression": {"C": [0.01, 0.1, 1]},
-        "svm": {"C": [0.1, 1, 10]},
+        "logistic_regression": {"clf__C": [0.01, 0.1, 1]},
+        "svm": {"clf__C": [0.1, 1, 10]},
         "decision_tree": {"max_depth": [3, 5, None]}
     }
 
@@ -44,7 +47,7 @@ def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str,
     try:
         model = base_models[algorithm]
     except:
-        logging.error(f"Invalid algorithm: {algorithm}")
+        logging.error(f"❌ Invalid algorithm: {algorithm}")
         return None, None
 
     if algorithm in ["logistic_regression", "svm"]:
@@ -59,7 +62,7 @@ def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str,
         model.fit(X, y)
         best_params = {"random_state": 42}
 
-    logging.info("Done training")
+    logging.info("✅ Training done")
 
     metadata = ClassifierMetadata(
         id=model_id,
@@ -69,7 +72,8 @@ def train_simple_classifier(df: pd.DataFrame, target_column: str, model_id: str,
         hyperparameters=best_params,
         description="",
         performance_metrics={},
-        gridsearch=gridsearch
+        gridsearch=gridsearch,
+        dataset=dataset_name.split("/")[-1]
     )
 
     return model, metadata
