@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>user_guide.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="user-guide">User Guide</h1>
+<h2 id="features">Features</h2>
+<h3 id="add-a-dataset">Add a Dataset</h3>
+<p>Allows adding a dataset to the tool.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--name</code> (required): Name assigned to the dataset when adding it.</li>
+<li><code>--file</code>: Path to a local file containing the dataset.</li>
+<li><code>--url</code>: URL of a remote source to fetch the dataset.</li>
+<li><code>--new</code>: Indicates that this is a <strong>new dataset</strong> (should not be included when adding a new version of an existing dataset).</li>
+<li><code>--upload_on_s3</code> (optional): Indicates whether to upload the dataset to the S3 bucket (if present, the dataset will be uploaded).</li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Either <code>--file</code> or <code>--url</code> must be specified, but not both simultaneously.</li>
+<li>The <code>--new</code> flag is required to add a dataset that does not yet exist.</li>
+</ul>
+</li>
+<li>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>
+<p>Add a dataset from a URL and add it to the S3 bucket (recommended for an easy demo 🙌):</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli save_dataset --name titanic --url https://www.kaggle.com/api/v1/datasets/download/yasserh/titanic-dataset --upload_on_s3
+</div></code></pre>
+<p><em>⚠️ Note: To download datasets from Kaggle, ensure you have your Kaggle API key stored in <code>~/.kaggle/kaggle.json</code> (https://www.kaggle.com/docs/api#authentication).</em></p>
+</li>
+<li>
+<p>Add a dataset from a local file (and not upload it to the S3 bucket):</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli save_dataset --name titanic --file /Users/allisterkohn/Desktop/titanic.csv
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="display-all-local-datasets">Display All Local Datasets</h3>
+<p>Displays the list of all datasets stored locally on the machine.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli list_local_datasets
+</div></code></pre>
+</li>
+</ul>
+<h3 id="display-versions-of-a-specific-local-dataset">Display Versions of a Specific Local Dataset</h3>
+<p>Lists all versions of a specific dataset stored locally.</p>
+<ul>
+<li>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli list_dataset_versions --dataset titanic
+</div></code></pre>
+</li>
+</ul>
+<h3 id="display-all-s3-datasets">Display All S3 Datasets</h3>
+<p>Displays the list of datasets available for download stored in your S3 bucket.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli list_s3_datasets
+</div></code></pre>
+</li>
+</ul>
+<h3 id="display-versions-of-a-specific-s3-dataset">Display Versions of a Specific S3 Dataset</h3>
+<p>Lists all versions of a specific dataset stored in the S3 bucket.</p>
+<ul>
+<li>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli list_s3_dataset_versions --dataset titanic
+</div></code></pre>
+</li>
+</ul>
+<h3 id="download-a-dataset-from-s3">Download a Dataset from S3</h3>
+<p>Allows retrieving a dataset stored in your S3 bucket and downloading it to the local environment.</p>
+<ul>
+<li>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>--s3_filename</code> (required): Name of the file as returned by the <code>list_s3_datasets</code> command.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli download_dataset_from_S3 --s3_filename titanic/titanic_v1_2025-03-06_22-29.csv
+
+</div></code></pre>
+</li>
+</ul>
+<h3 id="preprocess-a-dataset">Preprocess a Dataset</h3>
+<p>Performs preprocessing on a dataset by filling missing values according to the specified mode and removing unnecessary columns.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Path to the dataset to preprocess.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+<li><code>--test_size</code> (optional, default: <code>0.2</code>): Size of the test set.</li>
+</ul>
+<p><strong>Note:</strong></p>
+<ul>
+<li>If <code>--useless</code> is not specified, no columns will be removed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli preprocess --dataset titanic/titanic_v1_2025-03-01_14-29.csv --target Survived --mode mode --useless PassengerId Name Ticket
+</div></code></pre>
+</li>
+</ul>
+<h3 id="train-a-model">Train a Model</h3>
+<p>Allows training a model after dataset preprocessing.</p>
+<ul>
+<li><strong>Parameters:</strong>
+<ul>
+<li><code>--dataset</code> (required): Path to the preprocessed dataset.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
+</ul>
+</li>
+<li><strong>Examples:</strong>
+<ul>
+<li>
+<p>Train an XGBoost model without GridSearch:</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli train --dataset preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29 --target Survived --model xgboost
+</div></code></pre>
+</li>
+<li>
+<p>Train all available models with GridSearch (recommended for a full demo 🙌)</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli train --dataset preprocessed_datasets/titanic/titanic_v1_2025-03-01_14-29 --target Survived --model all --gridsearch
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="preprocess-a-dataset-and-train-a-model-combined">Preprocess a Dataset and Train a Model (combined)</h3>
+<p>Performs dataset preprocessing and trains a model in a single command.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Path to the dataset to preprocess.</li>
+<li><code>--target</code> (required): Name of the target variable.</li>
+<li><code>--mode</code> (required): Method for filling missing values (available modes: <code>mean</code>, <code>median</code>, <code>most_frequent</code>, <code>constant</code>).</li>
+<li><code>--model</code> (required): Machine learning model to use (available models: <code>xgboost</code>, <code>random_forest</code>, <code>logistic_regression</code>, <code>svm</code>, <code>decision_tree</code>, <code>all</code>).</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+<li><code>--test_size</code> (optional, default: <code>0.2</code>): Size of the test set.</li>
+<li><code>--gridsearch</code> (optional, default: <code>False</code>): Indicates whether to use GridSearch to find the best hyperparameters.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<ul>
+<li>
+<p>Train an XGBoost model on a preprocessed dataset without GridSearch:</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli preprocess_and_train --dataset titanic/titanic_v1_2025-03-01_14-29.csv --target Survived --mode mode --model xgboost --useless PassengerId Name Ticket
+</div></code></pre>
+</li>
+<li>
+<p>Train all available models with GridSearch (recommended for a full demo 🙌):</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli preprocess_and_train --dataset titanic/titanic_v1_2025-03-01_14-29.csv --target Survived --mode mode --model all --useless PassengerId Name Ticket --gridsearch
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="list-available-models">List Available Models</h3>
+<p>Displays the list of models associated with a specific dataset.</p>
+<ul>
+<li>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli list_models --dataset titanic
+</div></code></pre>
+</li>
+</ul>
+<h3 id="compare-models">Compare Models</h3>
+<p>Displays the performance metrics of trained models.</p>
+<ul>
+<li>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli compare_models --dataset titanic
+</div></code></pre>
+</li>
+</ul>
+<h3 id="find-the-best-model-for-a-dataset">Find the Best Model for a Dataset</h3>
+<p>Tests multiple models and selects the one with the best performance based on the specified metric.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--dataset</code> (required): Name of the dataset.</li>
+<li><code>--metric</code> (optional, default: <code>f1_score</code>): Model evaluation metric (available metrics: <code>accuracy</code>, <code>precision</code>, <code>recall</code>, <code>f1_score</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli find_best_model --dataset titanic --metric f1_score
+</div></code></pre>
+</li>
+<li>
+<p><strong>Notes:</strong></p>
+<p>The best model is saved in the <code>best_model.txt</code> file, which consists of three lines:</p>
+<ul>
+<li>The name of the algorithm used.</li>
+<li>Whether GridSearch was used or not.</li>
+<li>The dataset on which the model was trained.</li>
+</ul>
+</li>
+</ul>
+<h3 id="make-a-prediction-with-a-specific-model">Make a Prediction with a Specific Model</h3>
+<p>Predicts results from a test file and saves the predictions to an output file.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--input</code> (required): Path to the test file.</li>
+<li><code>--output</code> (required): Path to the output file for the predictions.</li>
+<li><code>--model</code> (required): Model to use for the prediction.</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli predict --input titanic_test.csv --output predictions.csv --model titanic/titanic_v1_2025-03-01_14-29_random_forest
+</div></code></pre>
+</li>
+</ul>
+<h3 id="make-a-prediction-with-the-best-model">Make a Prediction with the Best Model</h3>
+<p>Automatically uses the best available model to make a prediction.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--input</code> (required): Path to the test file.</li>
+<li><code>--output</code> (required): Path to the output file for the predictions.</li>
+<li><code>--dataset</code> (required): Name of the dataset containing the model to use.</li>
+<li><code>--useless</code> (optional): List of columns to exclude from the dataset (separated by spaces).</li>
+<li><code>--metric</code> (optional, default: <code>f1_score</code>): Model evaluation metric (available metrics: <code>accuracy</code>, <code>precision</code>, <code>recall</code>, <code>f1_score</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong> Make a prediction with the best model based on the Precision metric:</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli predict_with_best_model --input titanic_test.csv --output predictions.csv --dataset titanic --metric precision
+</div></code></pre>
+</li>
+</ul>
+<h3 id="build-image">Build image</h3>
+<p>Builds a Docker image for the project.</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli build_image
+</div></code></pre>
+<h3 id="run-container">Run container</h3>
+<p>Runs the Docker container.</p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli run_container
+</div></code></pre>
+<h3 id="create-an-ecr-repository">Create an ECR Repository</h3>
+<p>Creates an Amazon Elastic Container Registry (ECR) repository to store Docker images.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--repository-name</code> (optional, default: <code>mlopsapprunner</code>): The name of the ECR repository to create.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli create_ecr_repository
+</div></code></pre>
+<p>This command returns the URI that will be necessary in the next step.</p>
+</li>
+</ul>
+<h3 id="tag-and-push-a-docker-image-to-ecr">Tag and Push a Docker Image to ECR</h3>
+<p>Tags a local Docker image and pushes it to the ECR repository.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>--repository_uri</code> (required): The URI of the ECR repository where the image will be pushed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli tag_and_push_image --repository-uri 217831684037.dkr.ecr.eu-west-3.amazonaws.com/mlopsapprunner
+</div></code></pre>
+</li>
+</ul>
+<h3 id="deploy-an-ecr-image-to-aws-app-runner">Deploy an ECR Image to AWS App Runner</h3>
+<p>Deploys a Docker image from ECR to AWS App Runner,automatically configuring environment variables.</p>
+<ul>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li>
+<p><code>--image-identifier</code> (required): The ECR image URI (including tag) to deploy.</p>
+</li>
+<li>
+<p><code>--service-name</code> (optional, default: <code>mlops-app-runner</code>): The name of the App Runner service.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code><div>python src/cli/dsba_cli deploy_from_ecr_to_app_runner --image-identifier &lt;repository-uri&gt;:latest --service-name my-app-service
+</div></code></pre>
+</li>
+</ul>
+<hr>
+
+</body>
+</html>

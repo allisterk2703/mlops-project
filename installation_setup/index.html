@@ -20,7 +20,7 @@
     
     
       
-        <title>Installation & Setup - MLOps Project</title>
+        <title>🛠️  Installation & Setup - MLOps Project</title>
       
     
     
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation & Setup
+              🛠️ &nbsp;Installation & Setup
             
           </span>
         </div>
@@ -195,7 +195,7 @@
         
   
   <span class="md-ellipsis">
-    Introduction
+    📖 &nbsp;Introduction
   </span>
   
 
@@ -224,7 +224,7 @@
           
   
   <span class="md-ellipsis">
-    Installation & Setup
+    🛠️ &nbsp;Installation & Setup
   </span>
   
 
@@ -235,7 +235,7 @@
         
   
   <span class="md-ellipsis">
-    Installation & Setup
+    🛠️ &nbsp;Installation & Setup
   </span>
   
 
@@ -302,7 +302,7 @@
         
   
   <span class="md-ellipsis">
-    User Guide
+    👤 &nbsp;User Guide
   </span>
   
 
@@ -318,11 +318,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer_documentation/" class="md-nav__link">
+      <a href="../next_steps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Developer Documentation
+    🚀 &nbsp;Next Steps
   </span>
   
 
@@ -405,7 +405,7 @@
 <li>You must have Python installed.</li>
 <li>You must have <code>pip</code> installed.</li>
 <li>You must have Docker installed.</li>
-<li>You need VS Code or another code editor.</li>
+<li>You need VS Code.</li>
 </ul>
 <h3 id="aws-prerequisites">AWS Prerequisites<a class="headerlink" href="#aws-prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
@@ -417,23 +417,45 @@
 </code></pre></div></li>
 <li>
 <p>Attach policies to this user:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+<p><div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonECS_FullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AmazonS3FullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/AWSAppRunnerFullAccess
-aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMFullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMReadOnlyAccess
 </code></pre></div>
+    - Create an IAM Role:</p>
+<p><div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-role<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span><span class="se">\</span>
+--assume-role-policy-document<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;Version&quot;: &quot;2012-10-17&quot;,</span>
+<span class="s1">    &quot;Statement&quot;: [</span>
+<span class="s1">    {</span>
+<span class="s1">        &quot;Effect&quot;: &quot;Allow&quot;,</span>
+<span class="s1">        &quot;Principal&quot;: {</span>
+<span class="s1">        &quot;Service&quot;: &quot;build.apprunner.amazonaws.com&quot;</span>
+<span class="s1">        },</span>
+<span class="s1">        &quot;Action&quot;: &quot;sts:AssumeRole&quot;</span>
+<span class="s1">    }</span>
+<span class="s1">    ]</span>
+<span class="s1">}&#39;</span>
+</code></pre></div>
+    - Attach policies to this role:</p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-role-policy<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
+aws<span class="w"> </span>iam<span class="w"> </span>attach-role-policy<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+</code></pre></div>
 </li>
+</ul>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>get-role<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--query<span class="w"> </span><span class="s1">&#39;Role.Arn&#39;</span><span class="w"> </span>--output<span class="w"> </span>text
+</code></pre></div>
+<ul>
 <li>
 <p>Create an access key:</p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-access-key<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
 </code></pre></div>
 </li>
 <li>
-<p>Add the created user to your AWS CLI configuration:</p>
+<p>Add the access key and secret key to the AWS CLI using the elements <code>AccessKeyId</code> and <code>SecretAccessKey</code> generated previously:</p>
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure<span class="w"> </span>--profile<span class="w"> </span>MyIAMUser
 </code></pre></div>
 </li>
@@ -441,9 +463,15 @@ aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span cl
 </li>
 <li>
 <p>You need to create a S3 bucket:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3api<span class="w"> </span>create-bucket<span class="w"> </span>--bucket<span class="w"> </span>&lt;S3_bucket_Name&gt;<span class="w"> </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span>--create-bucket-configuration<span class="w"> </span><span class="nv">LocationConstraint</span><span class="o">=</span>eu-west-3
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3api<span class="w"> </span>create-bucket<span class="w"> </span>--bucket<span class="w"> </span>dsba-mlops-project<span class="w"> </span>--region<span class="w"> </span>eu-west-3<span class="w"> </span>--create-bucket-configuration<span class="w"> </span><span class="nv">LocationConstraint</span><span class="o">=</span>eu-west-3<span class="w"> </span>--profile<span class="w"> </span>MyIAMUser
 </code></pre></div>
-<p>(You can check that the bucket was created by running <code>aws s3 ls</code>.)</p>
+<ul>
+<li>Notes:<ul>
+<li>You can chose a different bucket name but you will need to update the <code>.env</code> file mentioned at step 5 of the installation accordingly.</li>
+<li>You can check that the bucket was created by running <code>aws s3 ls</code>.</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <hr />
@@ -454,7 +482,7 @@ aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span cl
 <ul>
 <li>Go to <a href="https://github.com/allisterk2703/mlops-project">mlops-project</a>.</li>
 <li>Click on "Code", then "Download ZIP".</li>
-<li>Extract the ZIP file to your <strong>~/Desktop</strong> for easy access.</li>
+<li>Extract the ZIP file to your <code>~/Desktop</code> for easy access.</li>
 </ul>
 <p>Or clone the repository using the following command:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>Desktop
@@ -490,12 +518,11 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <li>
 <p><strong>Create a <code>.env</code> file</strong></p>
 <p>At the root of the project, create a <code>.env</code> file and add the following (using the AWS credentials and S3 bucket name you created earlier):</p>
-<div class="highlight"><pre><span></span><code><span class="nv">AWS_ACCESS_KEY</span><span class="o">=</span>&lt;YOUR_AWS_ACCESS_KEY&gt;
-<span class="nv">AWS_SECRET_KEY</span><span class="o">=</span>&lt;YOUR_AWS_SECRET_KEY&gt;
+<div class="highlight"><pre><span></span><code><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;YOUR_AWS_ACCESS_KEY_ID&gt;
+<span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;YOUR_AWS_SECRET_ACCESS_KEY&gt;
 <span class="nv">AWS_REGION</span><span class="o">=</span>&lt;YOUR_AWS_REGION&gt;
-<span class="nv">S3_BUCKET_NAME</span><span class="o">=</span>&lt;YOUR_S3_BUCKET_NAME&gt;
+<span class="nv">S3_BUCKET_NAME</span><span class="o">=</span>dsba-mlops-project
 </code></pre></div>
-<p>Make sure you replace <code>&lt;YOUR_AWS_ACCESS_KEY&gt;</code>, <code>&lt;YOUR_AWS_SECRET_KEY&gt;</code>, <code>&lt;YOUR_AWS_REGION&gt;</code>, and <code>&lt;YOUR_S3_BUCKET_NAME&gt;</code> with your actual AWS credentials and S3 bucket name.</p>
 </li>
 </ol>
 <hr />
