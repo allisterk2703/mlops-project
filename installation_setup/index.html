@@ -425,7 +425,7 @@ aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span cl
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMFullAccess
 aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/IAMReadOnlyAccess
 </code></pre></div>
-    - Create an IAM Role:</p>
+    &lt;!-- - Create an IAM Role:</p>
 <p><div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-role<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span><span class="se">\</span>
 --assume-role-policy-document<span class="w"> </span><span class="s1">&#39;{</span>
 <span class="s1">    &quot;Version&quot;: &quot;2012-10-17&quot;,</span>
@@ -441,23 +441,23 @@ aws<span class="w"> </span>iam<span class="w"> </span>attach-user-policy<span cl
 <span class="s1">}&#39;</span>
 </code></pre></div>
     - Attach policies to this role:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>attach-role-policy<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
-aws<span class="w"> </span>iam<span class="w"> </span>attach-role-policy<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--policy-arn<span class="w"> </span>arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
-</code></pre></div>
+<p><code>bash
+aws iam attach-role-policy --role-name AppRunnerECRAccessRole --policy-arn arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
+aws iam attach-role-policy --role-name AppRunnerECRAccessRole --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess</code> &rarr;</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>get-role<span class="w"> </span>--role-name<span class="w"> </span>AppRunnerECRAccessRole<span class="w"> </span>--query<span class="w"> </span><span class="s1">&#39;Role.Arn&#39;</span><span class="w"> </span>--output<span class="w"> </span>text
-</code></pre></div>
+<p><code>bash
+aws iam get-role --role-name AppRunnerECRAccessRole --query 'Role.Arn' --output text</code></p>
 <ul>
 <li>
 <p>Create an access key:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>iam<span class="w"> </span>create-access-key<span class="w"> </span>--user-name<span class="w"> </span>MyIAMUser
-</code></pre></div>
+<p><code>bash
+aws iam create-access-key --user-name MyIAMUser</code></p>
 </li>
 <li>
 <p>Add the access key and secret key to the AWS CLI using the elements <code>AccessKeyId</code> and <code>SecretAccessKey</code> generated previously:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure<span class="w"> </span>--profile<span class="w"> </span>MyIAMUser
-</code></pre></div>
+<p><code>bash
+aws configure --profile MyIAMUser</code></p>
 </li>
 </ul>
 </li>
