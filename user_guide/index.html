@@ -853,7 +853,7 @@
 </li>
 <li>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mode<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
 </code></pre></div>
 </li>
 </ul>
@@ -901,12 +901,12 @@
 <ul>
 <li>
 <p>Train an XGBoost model on a preprocessed dataset without GridSearch:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mode<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--model<span class="w"> </span>xgboost<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket
 </code></pre></div>
 </li>
 <li>
 <p>Train all available models with GridSearch (recommended for a full demo 🙌):</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mode<span class="w"> </span>--model<span class="w"> </span>all<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket<span class="w"> </span>--gridsearch
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>src/cli/dsba_cli<span class="w"> </span>preprocess_and_train<span class="w"> </span>--dataset<span class="w"> </span>titanic/titanic_v1_2025-03-01_14-29.csv<span class="w"> </span>--target<span class="w"> </span>Survived<span class="w"> </span>--mode<span class="w"> </span>mean<span class="w"> </span>--model<span class="w"> </span>all<span class="w"> </span>--useless<span class="w"> </span>PassengerId<span class="w"> </span>Name<span class="w"> </span>Ticket<span class="w"> </span>--gridsearch
 </code></pre></div>
 </li>
 </ul>
